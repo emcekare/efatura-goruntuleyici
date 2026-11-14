@@ -14,6 +14,8 @@ Firefox'ta bir e-Fatura XML'i açınca ham kod görünür, Chrome ise XSLT deste
 - Şablonu olmayan (ya da şablonu bozuk) e-Fatura, e-Arşiv ve e-İrsaliye'ler uzantının **standart şablonuyla** gösterilir. Yerleşim GİB'in örnek fatura görünümüne benzer: taraflar, fatura bilgileri, kalemler (iskonto, KDV, diğer vergiler, tevkifat), toplamlar, istisna sebebi, ödeme bilgileri ve notlar. Döviz ve kur, şahıs alıcı (TCKN) desteklenir. Hesap yapmaz; tutarlar belgede yazdığı gibi gösterilir.
 - Şablonlu faturalarda **Standart şablon / Faturanın şablonu** düğmesiyle iki görünüm arasında geçilebilir.
 - Okunur (girintili) ham XML görünümü; gömülü ekler kısaltılır.
+- **Karekod (QR):** GİB şablonları karekodu bir betikle çizer; görüntüleyici şablon betiklerini çalıştırmadığı için karekodu uzantı kendisi üretir ve şablondaki yerine (`#qrcode`) koyar. Metin şablonda varsa (`#qrvalue`) aynen, yoksa GİB şablonlarındaki biçimle faturadan üretilir. Standart şablonda da sağ üstte karekod vardır.
+- Belgenin kendi şablonu sayfada ortalanır (çoğu şablon sabit genişlikte çizip sola yaslar).
 - **Ham XML / Fatura görünümü** geçişi, **Yazdır** düğmesi (Ctrl+P de faturayı yazdırır).
 - windows-1254, ISO-8859-9 ve BOM'lu dosyalar doğru okunur.
 - Türkçe ve İngilizce arayüz.
@@ -129,6 +131,8 @@ uzanti/
   lib/ham-xml.js       okunur ham XML
   lib/aktarim.js       XML'i görüntüleyiciye taşıma (storage.session)
   lib/standart-sablon.js  standart şablonu yükleme
+  lib/karekod.js       karekod metni ve görseli
+  vendor/qrcode-generator  qrcode-generator 2.0.4 (MIT)
   sablonlar/standart.xslt şablonsuz fatura / irsaliye görünümü
   vendor/xslt-polyfill xslt-polyfill 1.0.33 (BSD-3-Clause)
 test/                  birim ve uçtan uca testler
@@ -148,6 +152,7 @@ araclar/               örnek, simge ve paket üreticileri
 
 - Opens `.xml` tabs that contain a UBL Invoice / DespatchAdvice automatically; also via the context menu, or by choosing / dropping files in the viewer.
 - Documents without an embedded template (e-invoice / e-despatch) are rendered with the extension's own standard template, laid out like the GİB sample invoice.
+- Draws the e-invoice QR code itself (template scripts never run), using the bundled qrcode-generator (MIT).
 - Uses the native `XSLTProcessor` when available, otherwise the bundled [xslt-polyfill](https://github.com/mfreed7/xslt_polyfill) (WebAssembly libxslt, BSD-3-Clause). Nothing is downloaded at runtime.
 - The template is untrusted: output is rendered in a `sandbox=""` iframe with a restrictive CSP (no scripts, no external resources). The extension pages use `connect-src 'self'` (own files only); the extension makes **no network requests** and collects no data.
 - Does **not** verify the financial seal / XAdES signature.

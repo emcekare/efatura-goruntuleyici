@@ -53,12 +53,28 @@ function guvenliHaleGetir(belge) {
 }
 
 /**
+ * Belgenin kendi şablonunu sayfada ortalar. GİB şablonlarının çoğu sabit genişlikli
+ * (ör. 800 px) bir tablo çizip ortalamadığından fatura sola yaslı görünür. Gövde
+ * içeriği kadar daralıp ortalanır; içerik pencereden genişse eskisi gibi tam genişlik.
+ */
+const ORTALAMA_STILI = "body{width:fit-content!important;margin-left:auto!important;margin-right:auto!important}";
+
+/**
  * Sandbox'lı gösterim çerçevesi için hazırlar (betikler zaten çalışmaz).
  * @param {string} html
+ * @param {{ ortala?: boolean, duzenle?: (belge: Document) => void }} [secenekler]
+ *   ortala: gövdeyi ortala; duzenle: CSP eklenmeden önce belgeyi değiştir (ör. karekod)
  * @returns {string}
  */
-export function gosterimIcinHazirla(html) {
-  return guvenliHaleGetir(new DOMParser().parseFromString(html, "text/html"));
+export function gosterimIcinHazirla(html, { ortala = false, duzenle } = {}) {
+  const belge = new DOMParser().parseFromString(html, "text/html");
+  duzenle?.(belge);
+  if (ortala) {
+    const stil = belge.createElement("style");
+    stil.textContent = ORTALAMA_STILI;
+    belge.head.append(stil);
+  }
+  return guvenliHaleGetir(belge);
 }
 
 /**

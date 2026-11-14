@@ -83,6 +83,12 @@ function faturaSablonu({ baslik = "e-FATURA", ekBas = "", ekGovde = "" } = {}) {
           </div>
         </div>
 
+        <!-- GİB şablonlarındaki gibi: karekod metni gizli #qrvalue'da, betik #qrcode'a çizer -->
+        <div id="qrcode_container" style="float: right; margin: -8px 0 6px 12px;">
+          <div id="qrcode"></div>
+          <div id="qrvalue" style="display:none">{"vkntckn":"<xsl:value-of select="cac:AccountingSupplierParty/cac:Party/cac:PartyIdentification/cbc:ID"/>","no":"<xsl:value-of select="cbc:ID"/>","ettn":"<xsl:value-of select="cbc:UUID"/>","odenecek":"<xsl:value-of select="cac:LegalMonetaryTotal/cbc:PayableAmount"/>"}</div>
+          <script type="text/javascript">new QRCode(document.getElementById("qrcode"), { width: 140, height: 140 }).makeCode(document.getElementById("qrvalue").innerHTML);</script>
+        </div>
         <h1>${baslik}</h1>
 
         <table class="bilgi">

@@ -1,6 +1,6 @@
 {
   "name": "efatura-goruntuleyici",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "e-Fatura / e-Arşiv / e-İrsaliye (UBL-TR) XML dosyalarını gömülü XSLT şablonuyla gösteren tarayıcı uzantısı (Chrome, Firefox).",
   "license": "MIT",
@@ -25,7 +25,9 @@
   },
   "devDependencies": {
     "@xmldom/xmldom": "0.9.12",
+    "jsqr": "1.4.0",
     "playwright-core": "1.58.2",
+    "pngjs": "7.0.0",
     "web-ext": "10.8.0"
   }
 }

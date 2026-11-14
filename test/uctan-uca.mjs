@@ -18,6 +18,8 @@ import { tmpdir, homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import { chromium } from "playwright-core";
+import jsQR from "jsqr";
+import pngjs from "pngjs";
 
 const KOK = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const UZANTI = join(KOK, "uzanti");
@@ -143,6 +145,16 @@ try {
     if (process.env.GORUNTU_KLASORU) await sayfa.screenshot({ path: join(process.env.GORUNTU_KLASORU, `${ad}.png`) });
   };
 
+  /** Çerçevedeki karekod görselini ekrandan okuyup çözer (gerçekten okunabilir mi). */
+  async function karekoduCoz() {
+    const gorsel = cerceve().locator('img[alt="Karekod"]');
+    await gorsel.waitFor({ timeout: 10000 });
+    const png = pngjs.PNG.sync.read(await gorsel.screenshot());
+    const sonuc = jsQR(new Uint8ClampedArray(png.data), png.width, png.height);
+    if (!sonuc) throw new Error("karekod ekrandan okunamadı");
+    return sonuc.data;
+  }
+
   let efaturaAdresi;
   await dene(".xml sekmesi görüntüleyiciye yönlenir ve şablon uygulanır", async () => {
     efaturaAdresi = await xmlAc("efatura-ornek.xml");
@@ -153,6 +165,21 @@ try {
     esitMi(await sayfa.locator("#faturaCercevesi").getAttribute("sandbox"), "", "iframe sandbox");
     icerir(await sayfa.title(), "ORN2026000000001", "sekme başlığı");
     await goruntu("efatura-ornek");
+  });
+
+  await dene("karekod: faturanın şablonundaki yer tutucuya çizilir ve okunur", async () => {
+    await xmlAc("efatura-ornek.xml");
+    const veri = JSON.parse(await karekoduCoz());
+    esitMi(veri.no, "ORN2026000000001", "karekoddaki fatura no");
+    esitMi(veri.odenecek, "38705.40", "karekoddaki ödenecek");
+  });
+
+  await dene("faturanın şablonu sayfada ortalanır", async () => {
+    const cerceveKutusu = await sayfa.locator("#faturaCercevesi").boundingBox();
+    const govde = await cerceve().locator("body").boundingBox();
+    const sol = govde.x - cerceveKutusu.x;
+    const sag = cerceveKutusu.x + cerceveKutusu.width - (govde.x + govde.width);
+    if (sol < 40 || Math.abs(sol - sag) > 30) throw new Error(`ortalanmamış: sol ${sol.toFixed(0)} px, sağ ${sag.toFixed(0)} px`);
   });
 
   await dene("WASM polyfill ile dönüşüm (?polyfill=1)", async () => {
@@ -213,6 +240,10 @@ try {
       ["Saat", "birim adı"],
     ]) icerir(metin, aranan, neden);
     await goruntu("standart-sablon");
+    const karekod = JSON.parse(await karekoduCoz());
+    esitMi(karekod.avkntckn, "10000000146", "karekod alıcı TCKN");
+    esitMi(karekod["kdvmatrah(10)"], "300.00", "karekod KDV %10 matrahı");
+    esitMi(karekod.odenecek, "2058.60", "karekod ödenecek");
   });
 
   await dene("standart şablon: şablonsuz e-İrsaliye", async () => {

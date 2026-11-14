@@ -10,6 +10,7 @@ import { xsltHazirla, xsltUygula } from "./lib/donustur.js";
 import { gosterimIcinHazirla, yazdirmaIcinTemizle } from "./lib/temizle.js";
 import { okunurXml } from "./lib/ham-xml.js";
 import { standartSablonAl, STANDART_TURLER } from "./lib/standart-sablon.js";
+import { karekoduYerlestir } from "./lib/karekod.js";
 import { api, belgeAl, belgeKaydet, goruntuleyiciAdresi } from "./lib/aktarim.js";
 import { m, sayfayiCevir } from "./lib/dil.js";
 import { izinKartiniKur, firefoxNotunuGoster } from "./lib/izin.js";
@@ -111,6 +112,8 @@ async function belgeGoster(ad, xml) {
   if (kunye) el.dosyaAdi.textContent = `${kunye}  ·  ${ad}`;
 
   durum.sablonAdi = cozum.sablon?.dosyaAdi ?? null;
+  // Şablon betikleri çalışmadığından karekodu uzantı çizer
+  const karekodEkle = (htmlBelge) => karekoduYerlestir(htmlBelge, cozum.belge);
   const standartUygun = !cozum.hata && STANDART_TURLER.includes(cozum.tur);
 
   let neden = null;
@@ -124,7 +127,7 @@ async function belgeGoster(ad, xml) {
     // Önce belgenin kendi şablonu; yoksa ya da bozuksa uzantının standart şablonu
     if (cozum.sablon) {
       try {
-        durum.htmlBelge = gosterimIcinHazirla(xsltUygula(cozum.belge, cozum.sablon.xslt));
+        durum.htmlBelge = gosterimIcinHazirla(xsltUygula(cozum.belge, cozum.sablon.xslt), { ortala: true, duzenle: karekodEkle });
       } catch (e) {
         console.error("Belgenin şablonu uygulanamadı:", e);
         neden = standartUygun ? m("notBelgeSablonuHatali", e?.message ?? String(e)) : m("notDonusumHatasi", e?.message ?? String(e));
@@ -134,7 +137,7 @@ async function belgeGoster(ad, xml) {
     }
     if (standartUygun) {
       try {
-        durum.htmlStandart = gosterimIcinHazirla(xsltUygula(cozum.belge, await standartSablonAl()));
+        durum.htmlStandart = gosterimIcinHazirla(xsltUygula(cozum.belge, await standartSablonAl()), { duzenle: karekodEkle });
       } catch (e) {
         console.error("Standart şablon uygulanamadı:", e);
         if (!durum.htmlBelge) neden = m("notDonusumHatasi", e?.message ?? String(e));

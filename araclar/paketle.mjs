@@ -115,5 +115,5 @@ hazirla(
     // Firefox'ta polyfill yok; WASM izni de gerekmez
     m.content_security_policy.extension_pages = m.content_security_policy.extension_pages.replace(" 'wasm-unsafe-eval'", "");
   },
-  ["vendor"],
+  ["vendor/xslt-polyfill"],
 );

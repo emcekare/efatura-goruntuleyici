@@ -34,8 +34,9 @@
   <!-- Tutar + para birimi (TRY → TL) -->
   <xsl:template name="tutar">
     <xsl:param name="d"/>
+    <xsl:param name="desen" select="'#.##0,00'"/>
     <xsl:if test="$d">
-      <xsl:call-template name="sayi"><xsl:with-param name="d" select="$d"/></xsl:call-template>
+      <xsl:call-template name="sayi"><xsl:with-param name="d" select="$d"/><xsl:with-param name="desen" select="$desen"/></xsl:call-template>
       <xsl:text> </xsl:text>
       <xsl:choose>
         <xsl:when test="$d/@currencyID = 'TRY' or $d/@currencyID = 'TRL'">TL</xsl:when>
@@ -217,6 +218,8 @@
       .etiket { font-weight: bold; font-size: 10px; color: #444; letter-spacing: 1px; margin-bottom: 2px; }
       .baslik { text-align: center; }
       .baslik h1 { font-size: 22px; letter-spacing: 3px; margin: 4px 0 8px; }
+      .baslik { display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: flex-start; gap: 12px; }
+      .karekod:empty { display: none; }
       table { border-collapse: collapse; width: 100%; }
       .bilgi th, .bilgi td { border: 1px solid #999; padding: 2px 6px; text-align: left; vertical-align: top; }
       .bilgi th { width: 42%; white-space: nowrap; }
@@ -263,6 +266,7 @@
               <xsl:call-template name="taraf"><xsl:with-param name="p" select="cac:AccountingSupplierParty/cac:Party"/></xsl:call-template>
             </div>
             <div class="baslik">
+              <div id="qrcode" class="karekod"></div>
               <h1>
                 <xsl:choose>
                   <xsl:when test="$earsiv">e-ARŞİV FATURA</xsl:when>
@@ -349,7 +353,7 @@
                   <xsl:text> </xsl:text>
                   <xsl:call-template name="birim"><xsl:with-param name="kod" select="cbc:InvoicedQuantity/@unitCode"/></xsl:call-template>
                 </td>
-                <td class="sag"><xsl:call-template name="tutar"><xsl:with-param name="d" select="cac:Price/cbc:PriceAmount"/></xsl:call-template></td>
+                <td class="sag"><xsl:call-template name="tutar"><xsl:with-param name="d" select="cac:Price/cbc:PriceAmount"/><xsl:with-param name="desen" select="'#.##0,00######'"/></xsl:call-template></td>
                 <td class="sag">
                   <xsl:for-each select="$iskonto[cbc:MultiplierFactorNumeric]">
                     <xsl:call-template name="oran"><xsl:with-param name="d" select="cbc:MultiplierFactorNumeric"/><xsl:with-param name="carpan" select="100"/></xsl:call-template>
@@ -577,7 +581,7 @@
                   <xsl:text> </xsl:text>
                   <xsl:call-template name="birim"><xsl:with-param name="kod" select="cbc:DeliveredQuantity/@unitCode"/></xsl:call-template>
                 </td>
-                <td class="sag"><xsl:call-template name="tutar"><xsl:with-param name="d" select="cac:Shipment/cac:GoodsItem/cac:InvoiceLine/cac:Price/cbc:PriceAmount"/></xsl:call-template></td>
+                <td class="sag"><xsl:call-template name="tutar"><xsl:with-param name="d" select="cac:Shipment/cac:GoodsItem/cac:InvoiceLine/cac:Price/cbc:PriceAmount"/><xsl:with-param name="desen" select="'#.##0,00######'"/></xsl:call-template></td>
                 <td class="sag"><xsl:call-template name="tutar"><xsl:with-param name="d" select="cac:Shipment/cac:GoodsItem/cac:InvoiceLine/cbc:LineExtensionAmount"/></xsl:call-template></td>
               </tr>
             </xsl:for-each>

@@ -3,7 +3,7 @@
   "name": "__MSG_uzantiAdi__",
   "short_name": "__MSG_kisaAd__",
   "description": "__MSG_uzantiAciklamasi__",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "default_locale": "tr",
   "icons": {
     "16": "simgeler/simge-16.png",
