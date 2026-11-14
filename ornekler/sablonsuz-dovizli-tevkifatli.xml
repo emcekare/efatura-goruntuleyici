@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+  xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+  xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+  xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>TR1.2</cbc:CustomizationID>
+  <cbc:ProfileID>TICARIFATURA</cbc:ProfileID>
+  <cbc:ID>DVZ2026000000021</cbc:ID>
+  <cbc:CopyIndicator>false</cbc:CopyIndicator>
+  <cbc:UUID>8b7a6c5d-4e3f-4a2b-9c1d-0e9f8a7b6c5d</cbc:UUID>
+  <cbc:IssueDate>2026-11-05</cbc:IssueDate>
+  <cbc:IssueTime>14:35:12.0000000+03:00</cbc:IssueTime>
+  <cbc:InvoiceTypeCode>TEVKIFAT</cbc:InvoiceTypeCode>
+  <cbc:Note>Şablonsuz sentetik örnek: standart şablon döviz, iskonto, tevkifat ve istisnayı göstermeli.</cbc:Note>
+  <cbc:Note>Gerçek bir fatura değildir.</cbc:Note>
+  <cbc:DocumentCurrencyCode>USD</cbc:DocumentCurrencyCode>
+  <cbc:LineCountNumeric>3</cbc:LineCountNumeric>
+  <cac:OrderReference><cbc:ID>SIP-2026-0412</cbc:ID><cbc:IssueDate>2026-10-28</cbc:IssueDate></cac:OrderReference>
+  <cac:DespatchDocumentReference><cbc:ID>IRS2026000000015</cbc:ID><cbc:IssueDate>2026-11-03</cbc:IssueDate></cac:DespatchDocumentReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:WebsiteURI>https://ornek.invalid</cbc:WebsiteURI>
+      <cac:PartyIdentification><cbc:ID schemeID="VKN">9990000001</cbc:ID></cac:PartyIdentification>
+      <cac:PartyIdentification><cbc:ID schemeID="MERSISNO">0999000000100015</cbc:ID></cac:PartyIdentification>
+      <cac:PartyName><cbc:Name>ÖRNEK YAZILIM VE DANIŞMANLIK TİCARET A.Ş.</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Çiçek Sokak</cbc:StreetName><cbc:BuildingNumber>7</cbc:BuildingNumber><cbc:Room>3</cbc:Room>
+        <cbc:CitySubdivisionName>Çankaya</cbc:CitySubdivisionName><cbc:CityName>ANKARA</cbc:CityName><cbc:PostalZone>06680</cbc:PostalZone>
+        <cac:Country><cbc:Name>Türkiye</cbc:Name></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>Kavaklıdere</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>
+      <cac:Contact><cbc:Telephone>0312 000 00 00</cbc:Telephone><cbc:ElectronicMail>fatura@ornek.invalid</cbc:ElectronicMail></cac:Contact>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyIdentification><cbc:ID schemeID="TCKN">10000000146</cbc:ID></cac:PartyIdentification>
+      <cac:PostalAddress>
+        <cbc:StreetName>Gül Sokak</cbc:StreetName><cbc:BuildingNumber>12</cbc:BuildingNumber>
+        <cbc:CitySubdivisionName>Karşıyaka</cbc:CitySubdivisionName><cbc:CityName>İZMİR</cbc:CityName>
+        <cac:Country><cbc:Name>Türkiye</cbc:Name></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>Karşıyaka</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>
+      <cac:Person><cbc:FirstName>Ayşe Gül</cbc:FirstName><cbc:FamilyName>Öztürkoğlu</cbc:FamilyName></cac:Person>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode>42</cbc:PaymentMeansCode>
+    <cbc:PaymentDueDate>2026-12-05</cbc:PaymentDueDate>
+    <cac:PayeeFinancialAccount>
+      <cbc:ID>TR00 0000 0000 0000 0000 0000 00</cbc:ID>
+      <cbc:CurrencyCode>USD</cbc:CurrencyCode>
+      <cac:FinancialInstitutionBranch><cbc:Name>Örnek Bankası Kızılay Şubesi</cbc:Name></cac:FinancialInstitutionBranch>
+    </cac:PayeeFinancialAccount>
+  </cac:PaymentMeans>
+  <cac:PricingExchangeRate>
+    <cbc:SourceCurrencyCode>USD</cbc:SourceCurrencyCode>
+    <cbc:TargetCurrencyCode>TRY</cbc:TargetCurrencyCode>
+    <cbc:CalculationRate>41.2345</cbc:CalculationRate>
+  </cac:PricingExchangeRate>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="USD">235.20</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="USD">600.00</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="USD">0.00</cbc:TaxAmount>
+      <cbc:Percent>0</cbc:Percent>
+      <cac:TaxCategory><cbc:TaxExemptionReasonCode>351</cbc:TaxExemptionReasonCode><cbc:TaxExemptionReason>Diğer istisnalar (sentetik örnek)</cbc:TaxExemptionReason><cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="USD">300.00</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="USD">30.00</cbc:TaxAmount>
+      <cbc:Percent>10</cbc:Percent>
+      <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="USD">1026.00</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="USD">205.20</cbc:TaxAmount>
+      <cbc:Percent>20</cbc:Percent>
+      <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:WithholdingTaxTotal>
+    <cbc:TaxAmount currencyID="USD">102.60</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="USD">205.20</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="USD">102.60</cbc:TaxAmount>
+      <cbc:Percent>50</cbc:Percent>
+      <cac:TaxCategory><cac:TaxScheme><cbc:Name>ETÜT, PLAN-PROJE, DANIŞMANLIK (örnek)</cbc:Name><cbc:TaxTypeCode>602</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:WithholdingTaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="USD">1926.00</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="USD">1926.00</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="USD">2161.20</cbc:TaxInclusiveAmount>
+    <cbc:AllowanceTotalAmount currencyID="USD">114.00</cbc:AllowanceTotalAmount>
+    <cbc:PayableAmount currencyID="USD">2058.60</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="HUR">12</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="USD">1026.00</cbc:LineExtensionAmount>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+      <cbc:MultiplierFactorNumeric>0.1</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="USD">114.00</cbc:Amount>
+      <cbc:BaseAmount currencyID="USD">1140.00</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="USD">205.20</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="USD">1026.00</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="USD">205.20</cbc:TaxAmount>
+        <cbc:Percent>20</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:WithholdingTaxTotal>
+      <cbc:TaxAmount currencyID="USD">102.60</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="USD">205.20</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="USD">102.60</cbc:TaxAmount>
+        <cbc:Percent>50</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>ETÜT, PLAN-PROJE, DANIŞMANLIK (örnek)</cbc:Name><cbc:TaxTypeCode>602</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:WithholdingTaxTotal>
+    <cac:Item><cbc:Name>Yazılım danışmanlığı — ön analiz ve raporlama</cbc:Name><cbc:Description>Kasım 2026, uzaktan</cbc:Description></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="USD">95.00</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID>2</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">40</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="USD">300.00</cbc:LineExtensionAmount>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="USD">30.00</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="USD">300.00</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="USD">30.00</cbc:TaxAmount>
+        <cbc:Percent>10</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:Item><cbc:Name>Basılı kullanım kılavuzu (Türkçe, 120 sayfa)</cbc:Name></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="USD">7.50</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID>3</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="USD">600.00</cbc:LineExtensionAmount>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="USD">0.00</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="USD">600.00</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="USD">0.00</cbc:TaxAmount>
+        <cbc:Percent>0</cbc:Percent>
+        <cac:TaxCategory><cbc:TaxExemptionReasonCode>351</cbc:TaxExemptionReasonCode><cbc:TaxExemptionReason>Diğer istisnalar (sentetik örnek)</cbc:TaxExemptionReason><cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:Item><cbc:Name>Yurt dışı uzaktan eğitim hizmeti</cbc:Name></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="USD">600.00</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

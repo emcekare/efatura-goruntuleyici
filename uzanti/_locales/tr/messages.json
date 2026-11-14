@@ -33,5 +33,11 @@
   "notBelgeBulunamadi": { "message": "Belge bulunamadı. Tarayıcı kapatılıp açıldıysa dosyayı yeniden açın." },
   "notDosyaOkunamadi": { "message": "Dosya okunamadı: $AD$", "placeholders": { "ad": { "content": "$1" } } },
 
-  "baslikFatura": { "message": "$NO$ — e-Fatura Görüntüleyici", "placeholders": { "no": { "content": "$1" } } }
+  "baslikFatura": { "message": "$NO$ — e-Fatura Görüntüleyici", "placeholders": { "no": { "content": "$1" } } },
+
+  "aracStandartSablon": {"message": "Standart şablon"},
+  "aracBelgeSablonu": {"message": "Faturanın şablonu"},
+  "sablonStandart": {"message": "standart"},
+  "notStandartSablon": {"message": "Bu belgede görünüm şablonu yok; uzantının standart şablonuyla gösteriliyor."},
+  "notBelgeSablonuHatali": {"message": "Belgenin kendi şablonu uygulanamadı ($HATA$); standart şablonla gösteriliyor.", "placeholders": {"hata": {"content": "$1"}}}
 }

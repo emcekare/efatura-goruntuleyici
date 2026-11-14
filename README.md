@@ -11,7 +11,9 @@ Firefox'ta bir e-Fatura XML'i açınca ham kod görünür, Chrome ise XSLT deste
 - Adresi `.xml` ile biten sekmeler (http, https, `file://`) UBL fatura/irsaliye ise otomatik olarak görüntüleyicide açılır. Açılır pencereden kapatılabilir.
 - Sağ tık → **Bu XML'i fatura olarak göster**: adresi `.xml` ile bitmeyen sekmeler için.
 - Uzantı simgesi → **Dosya aç / sürükle-bırak**: dosyayı seçerek ya da sayfaya sürükleyerek açma. Birden fazla dosya bırakırsanız her biri ayrı sekmede açılır. `file://` erişimi vermek istemeyenler için de bu yol.
-- Şablonu olmayan belgelerde okunur (girintili) ham XML; gömülü ekler kısaltılır.
+- Şablonu olmayan (ya da şablonu bozuk) e-Fatura, e-Arşiv ve e-İrsaliye'ler uzantının **standart şablonuyla** gösterilir. Yerleşim GİB'in örnek fatura görünümüne benzer: taraflar, fatura bilgileri, kalemler (iskonto, KDV, diğer vergiler, tevkifat), toplamlar, istisna sebebi, ödeme bilgileri ve notlar. Döviz ve kur, şahıs alıcı (TCKN) desteklenir. Hesap yapmaz; tutarlar belgede yazdığı gibi gösterilir.
+- Şablonlu faturalarda **Standart şablon / Faturanın şablonu** düğmesiyle iki görünüm arasında geçilebilir.
+- Okunur (girintili) ham XML görünümü; gömülü ekler kısaltılır.
 - **Ham XML / Fatura görünümü** geçişi, **Yazdır** düğmesi (Ctrl+P de faturayı yazdırır).
 - windows-1254, ISO-8859-9 ve BOM'lu dosyalar doğru okunur.
 - Türkçe ve İngilizce arayüz.
@@ -23,7 +25,9 @@ Firefox'ta bir e-Fatura XML'i açınca ham kod görünür, Chrome ise XSLT deste
 1. PDF ekleri (adı, MIME türü ya da `%PDF` imzası) atlanır.
 2. İçeriği `xsl:stylesheet` / `xsl:transform` olan ekler şablon adayıdır.
 3. Adı `.xslt` ile biten (ya da MIME türünde `xsl` geçen) aday tercih edilir; yoksa ilk aday kullanılır.
-4. Şablon yoksa ham XML gösterilir.
+4. Şablon yoksa ya da uygulanamıyorsa fatura ve irsaliye için standart şablon ([`uzanti/sablonlar/standart.xslt`](uzanti/sablonlar/standart.xslt)), diğer belgeler için ham XML gösterilir.
+
+Standart şablon bu proje için sıfırdan yazılmıştır (MIT); GİB'in şablon dosyası değildir.
 
 ### Dönüşüm
 
@@ -35,7 +39,7 @@ Görünüm şablonu faturayı gönderen tarafın yazdığı koddur; uzantı ona 
 
 - Fatura `sandbox=""` bir iframe'de gösterilir: şablondaki betikler ve `onclick` gibi olay öznitelikleri **çalışmaz**, şablon uzantıya ya da başka sekmelere erişemez.
 - Çıktının başına kısıtlayıcı bir içerik güvenliği politikası (CSP) eklenir: dış görsel, stil, yazı tipi yüklenemez; yalnızca satır içi stil ve `data:` görseller (logo, karekod, imza) çalışır. `meta refresh` ve `<base>` atılır, dış bağlantılar tıklanamaz (adres, üzerine gelince görünür).
-- Uzantı sayfalarının CSP'si `connect-src 'none'`: uzantı hiçbir sunucuya bağlanamaz. Şablondaki `document('http://…')` ile dış belge çekme denemesinin sunucuya ulaşmadığı Chrome'da uçtan uca testle doğrulanıyor (Firefox'ta henüz otomatik test yok).
+- Uzantı sayfalarının CSP'si `connect-src 'self'`: uzantı yalnızca kendi dosyalarını (standart şablon) okuyabilir, hiçbir sunucuya bağlanamaz. Şablondaki `document('http://…')` ile dış belge çekme denemesinin sunucuya ulaşmadığı Chrome'da uçtan uca testle doğrulanıyor (Firefox'ta henüz otomatik test yok).
 - Yazdırmada çıktı ayrıca betiklerden, olay özniteliklerinden ve `javascript:` bağlantılarından temizlenir ve betik çalıştıramayan ayrı bir çerçevede basılır.
 - XML'ler yalnızca tarayıcı belleğinde (`storage.session`) tutulur, tarayıcı kapanınca silinir; en fazla 15 belge saklanır.
 
@@ -101,6 +105,8 @@ uzanti/
   lib/temizle.js       çıktıya CSP ekleme, yazdırma temizliği
   lib/ham-xml.js       okunur ham XML
   lib/aktarim.js       XML'i görüntüleyiciye taşıma (storage.session)
+  lib/standart-sablon.js  standart şablonu yükleme
+  sablonlar/standart.xslt şablonsuz fatura / irsaliye görünümü
   vendor/xslt-polyfill xslt-polyfill 1.0.33 (BSD-3-Clause)
 test/                  birim ve uçtan uca testler
 ornekler/              sentetik UBL-TR örnekleri
@@ -118,8 +124,9 @@ araclar/               örnek, simge ve paket üreticileri
 **e-Invoice Viewer** is a Chrome/Firefox extension that renders Turkish e-Fatura, e-Arşiv and e-İrsaliye (UBL-TR) XML files using the XSLT view template embedded in the document (`cac:AdditionalDocumentReference` → `cbc:EmbeddedDocumentBinaryObject`, base64).
 
 - Opens `.xml` tabs that contain a UBL Invoice / DespatchAdvice automatically; also via the context menu, or by choosing / dropping files in the viewer.
+- Documents without an embedded template (e-invoice / e-despatch) are rendered with the extension's own standard template, laid out like the GİB sample invoice.
 - Uses the native `XSLTProcessor` when available, otherwise the bundled [xslt-polyfill](https://github.com/mfreed7/xslt_polyfill) (WebAssembly libxslt, BSD-3-Clause). Nothing is downloaded at runtime.
-- The template is untrusted: output is rendered in a `sandbox=""` iframe with a restrictive CSP (no scripts, no external resources). The extension pages use `connect-src 'none'`; the extension makes **no network requests** and collects no data.
+- The template is untrusted: output is rendered in a `sandbox=""` iframe with a restrictive CSP (no scripts, no external resources). The extension pages use `connect-src 'self'` (own files only); the extension makes **no network requests** and collects no data.
 - Does **not** verify the financial seal / XAdES signature.
 
 Install from source: `chrome://extensions` → Developer mode → *Load unpacked* → select the `uzanti` folder. Firefox: `about:debugging` → *Load Temporary Add-on* → `uzanti/manifest.json`.

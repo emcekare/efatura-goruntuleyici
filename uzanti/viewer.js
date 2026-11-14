@@ -1,13 +1,15 @@
 /**
  * Görüntüleyici sayfası: XML'i alır, gömülü XSLT şablonunu uygular ve sonucu
  * betik çalıştıramayan bir iframe'de (sandbox="") gösterir. Şablon yoksa ya da
- * uygulanamazsa okunur ham XML gösterilir.
+ * bozuksa e-Fatura / e-İrsaliye için uzantının standart şablonu kullanılır; o da
+ * olmazsa okunur ham XML gösterilir.
  */
 
 import { faturaCozumle, baytMetin, CBC } from "./lib/sablon.js";
 import { xsltHazirla, xsltUygula } from "./lib/donustur.js";
 import { gosterimIcinHazirla, yazdirmaIcinTemizle } from "./lib/temizle.js";
 import { okunurXml } from "./lib/ham-xml.js";
+import { standartSablonAl, STANDART_TURLER } from "./lib/standart-sablon.js";
 import { api, belgeAl, belgeKaydet, goruntuleyiciAdresi } from "./lib/aktarim.js";
 import { m, sayfayiCevir } from "./lib/dil.js";
 
@@ -18,6 +20,7 @@ const el = {
   not: $("not"),
   sablonAdi: $("sablonAdi"),
   gorunumDugmesi: $("gorunumDugmesi"),
+  sablonDugmesi: $("sablonDugmesi"),
   baskaDosyaDugmesi: $("baskaDosyaDugmesi"),
   yazdirDugmesi: $("yazdirDugmesi"),
   acilis: $("acilis"),
@@ -29,8 +32,11 @@ const el = {
   surukleOrtusu: $("surukleOrtusu"),
 };
 
-/** Ekrandaki belge: dönüşüm çıktısı (varsa) ve okunur XML. */
-const durum = { html: null, hamMetin: "", gorunum: "fatura" };
+/**
+ * Ekrandaki belge: belgenin kendi şablonuyla ve standart şablonla üretilen HTML
+ * (hangisi varsa), okunur XML ve açık görünüm.
+ */
+const durum = { htmlBelge: null, htmlStandart: null, hamMetin: "", sablonAdi: null, gorunum: "ham", sonFatura: "belge" };
 
 /** Test için `viewer.html?polyfill=1`: yerleşik XSLT olsa bile polyfill'i kullan. */
 const polyfillZorla = new URLSearchParams(location.search).get("polyfill") === "1";
@@ -94,53 +100,87 @@ async function belgeGoster(ad, xml) {
 
   const cozum = faturaCozumle(xml);
   durum.hamMetin = okunurXml(cozum.belge, xml);
-  durum.html = null;
+  durum.htmlBelge = null;
+  durum.htmlStandart = null;
 
   const kunye = belgeKunyesi(cozum.belge);
   document.title = kunye ? m("baslikFatura", kunye) : `${ad} — ${m("uzantiAdi")}`;
   if (kunye) el.dosyaAdi.textContent = `${kunye}  ·  ${ad}`;
 
+  durum.sablonAdi = cozum.sablon?.dosyaAdi ?? null;
+  const standartUygun = !cozum.hata && STANDART_TURLER.includes(cozum.tur);
+
   let neden = null;
   if (cozum.hata) {
     neden = m("notXmlBozuk");
-  } else if (!cozum.sablon) {
+  } else if (!cozum.sablon && !standartUygun) {
     neden = cozum.tur ? m("notSablonYok") : m("notUblDegil");
   } else if (!(await xsltHazirla(polyfillZorla))) {
     neden = m("notXsltYok");
   } else {
-    try {
-      durum.html = gosterimIcinHazirla(xsltUygula(cozum.belge, cozum.sablon.xslt));
-    } catch (e) {
-      console.error("Şablon uygulanamadı:", e);
-      neden = m("notDonusumHatasi", e?.message ?? String(e));
+    // Önce belgenin kendi şablonu; yoksa ya da bozuksa uzantının standart şablonu
+    if (cozum.sablon) {
+      try {
+        durum.htmlBelge = gosterimIcinHazirla(xsltUygula(cozum.belge, cozum.sablon.xslt));
+      } catch (e) {
+        console.error("Belgenin şablonu uygulanamadı:", e);
+        neden = standartUygun ? m("notBelgeSablonuHatali", e?.message ?? String(e)) : m("notDonusumHatasi", e?.message ?? String(e));
+      }
+    } else {
+      neden = m("notStandartSablon");
+    }
+    if (standartUygun) {
+      try {
+        durum.htmlStandart = gosterimIcinHazirla(xsltUygula(cozum.belge, await standartSablonAl()));
+      } catch (e) {
+        console.error("Standart şablon uygulanamadı:", e);
+        if (!durum.htmlBelge) neden = m("notDonusumHatasi", e?.message ?? String(e));
+      }
     }
   }
 
-  el.sablonAdi.hidden = !cozum.sablon?.dosyaAdi;
-  el.sablonAdi.textContent = cozum.sablon?.dosyaAdi ? m("aracSablon", cozum.sablon.dosyaAdi) : "";
   notGoster(neden);
-  gorunumSec(durum.html ? "fatura" : "ham");
+  gorunumSec(durum.htmlBelge ? "belge" : durum.htmlStandart ? "standart" : "ham");
   el.yukleniyor.hidden = true;
 }
 
-/** "fatura" ya da "ham" görünümünü açar. */
+/** Ekrandaki fatura HTML'i (ham XML görünümünde null). */
+function gorunenHtml() {
+  if (durum.gorunum === "belge") return durum.htmlBelge;
+  if (durum.gorunum === "standart") return durum.htmlStandart;
+  return null;
+}
+
+/** "belge" (faturanın şablonu), "standart" ya da "ham" görünümünü açar. */
 function gorunumSec(gorunum) {
   durum.gorunum = gorunum;
-  const fatura = gorunum === "fatura" && durum.html !== null;
-  if (fatura && el.cerceve.srcdoc !== durum.html) {
+  if (gorunum !== "ham") durum.sonFatura = gorunum;
+  const html = gorunenHtml();
+  const fatura = html !== null;
+  if (fatura && el.cerceve.srcdoc !== html) {
     el.cerceve.title = el.dosyaAdi.textContent;
-    el.cerceve.srcdoc = durum.html;
+    el.cerceve.srcdoc = html;
   }
   el.cerceve.hidden = !fatura;
   el.hamXml.hidden = fatura;
   if (!fatura) el.hamXml.textContent = durum.hamMetin;
 
-  el.yazdirDugmesi.hidden = durum.html === null || !fatura;
-  el.gorunumDugmesi.hidden = durum.html === null;
+  const faturaVar = durum.htmlBelge !== null || durum.htmlStandart !== null;
+  el.yazdirDugmesi.hidden = !fatura;
+  el.gorunumDugmesi.hidden = !faturaVar;
   el.gorunumDugmesi.textContent = fatura ? m("aracHamXml") : m("aracFatura");
+
+  // İki şablon da varsa aralarında geçiş
+  el.sablonDugmesi.hidden = !(fatura && durum.htmlBelge !== null && durum.htmlStandart !== null);
+  el.sablonDugmesi.textContent = gorunum === "standart" ? m("aracBelgeSablonu") : m("aracStandartSablon");
+
+  const sablonEtiketi = gorunum === "belge" ? durum.sablonAdi : gorunum === "standart" ? m("sablonStandart") : null;
+  el.sablonAdi.hidden = !sablonEtiketi;
+  el.sablonAdi.textContent = sablonEtiketi ? m("aracSablon", sablonEtiketi) : "";
 }
 
-el.gorunumDugmesi.addEventListener("click", () => gorunumSec(durum.gorunum === "fatura" ? "ham" : "fatura"));
+el.gorunumDugmesi.addEventListener("click", () => gorunumSec(durum.gorunum === "ham" ? durum.sonFatura : "ham"));
+el.sablonDugmesi.addEventListener("click", () => gorunumSec(durum.gorunum === "standart" ? "belge" : "standart"));
 
 // ---- Yazdırma ----
 // sandbox="" çerçeve parent'tan yazdırılamaz. Temizlenmiş çıktı (betik ve olay
@@ -149,7 +189,8 @@ el.gorunumDugmesi.addEventListener("click", () => gorunumSec(durum.gorunum === "
 let yazdirmaCercevesi = null;
 
 function yazdir() {
-  if (durum.html === null) {
+  const html = gorunenHtml();
+  if (html === null) {
     window.print();
     return;
   }
@@ -172,14 +213,14 @@ function yazdir() {
     },
     { once: true },
   );
-  cerceve.srcdoc = yazdirmaIcinTemizle(durum.html);
+  cerceve.srcdoc = yazdirmaIcinTemizle(html);
   document.body.appendChild(cerceve);
   yazdirmaCercevesi = cerceve;
 }
 
 el.yazdirDugmesi.addEventListener("click", yazdir);
 document.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "p" && durum.html !== null && durum.gorunum === "fatura") {
+  if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "p" && gorunenHtml() !== null) {
     e.preventDefault();
     yazdir();
   }

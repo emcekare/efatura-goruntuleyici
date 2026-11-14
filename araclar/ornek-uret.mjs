@@ -4,7 +4,7 @@
  * Kullanım: node araclar/ornek-uret.mjs
  */
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -413,4 +413,177 @@ writeFileSync(
   ),
 );
 
+// ---------------------------------------------------------------- Şablonsuz, alanları zengin örnekler
+// Standart şablonu sınamak için: döviz + kur, şahıs alıcı (TCKN), iskonto, iki KDV
+// oranı, tevkifat, KDV istisnası, ödeme bilgisi, irsaliye ve sipariş referansı.
+
+const para = (n) => n.toFixed(2);
+const satirlar = [
+  // [sıra, ad, miktar, birim, fiyat, iskontoOrani, kdvOrani, tevkifat (pay/10) | null, istisnaKodu | null]
+  [1, "Yazılım danışmanlığı — ön analiz ve raporlama", 12, "HUR", 95, 0.1, 20, 5, null],
+  [2, "Basılı kullanım kılavuzu (Türkçe, 120 sayfa)", 40, "C62", 7.5, 0, 10, null, null],
+  [3, "Yurt dışı uzaktan eğitim hizmeti", 1, "C62", 600, 0, 0, null, "351"],
+];
+let matrahToplam = 0, iskontoToplam = 0;
+const kdvGrup = {}, tevkifatlar = [];
+const satirXml = satirlar.map(([sira, ad, miktar, birim, fiyat, iskOran, kdvOran, tevkifat, istisna]) => {
+  const brut = miktar * fiyat;
+  const iskonto = brut * iskOran;
+  const net = brut - iskonto;
+  const kdv = (net * kdvOran) / 100;
+  matrahToplam += net;
+  iskontoToplam += iskonto;
+  kdvGrup[kdvOran] ??= { matrah: 0, kdv: 0, istisna };
+  kdvGrup[kdvOran].matrah += net;
+  kdvGrup[kdvOran].kdv += kdv;
+  const tevkifatTutari = tevkifat ? (kdv * tevkifat) / 10 : 0;
+  if (tevkifat) tevkifatlar.push({ matrah: kdv, tutar: tevkifatTutari, oran: tevkifat * 10 });
+  return `
+  <cac:InvoiceLine>
+    <cbc:ID>${sira}</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="${birim}">${miktar}</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="USD">${para(net)}</cbc:LineExtensionAmount>${iskOran ? `
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+      <cbc:MultiplierFactorNumeric>${iskOran}</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="USD">${para(iskonto)}</cbc:Amount>
+      <cbc:BaseAmount currencyID="USD">${para(brut)}</cbc:BaseAmount>
+    </cac:AllowanceCharge>` : ""}
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="USD">${para(kdv)}</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="USD">${para(net)}</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="USD">${para(kdv)}</cbc:TaxAmount>
+        <cbc:Percent>${kdvOran}</cbc:Percent>
+        <cac:TaxCategory>${istisna ? `<cbc:TaxExemptionReasonCode>${istisna}</cbc:TaxExemptionReasonCode><cbc:TaxExemptionReason>Diğer istisnalar (sentetik örnek)</cbc:TaxExemptionReason>` : ""}<cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>${tevkifat ? `
+    <cac:WithholdingTaxTotal>
+      <cbc:TaxAmount currencyID="USD">${para(tevkifatTutari)}</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="USD">${para(kdv)}</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="USD">${para(tevkifatTutari)}</cbc:TaxAmount>
+        <cbc:Percent>${tevkifat * 10}</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>ETÜT, PLAN-PROJE, DANIŞMANLIK (örnek)</cbc:Name><cbc:TaxTypeCode>602</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:WithholdingTaxTotal>` : ""}
+    <cac:Item><cbc:Name>${ad}</cbc:Name>${sira === 1 ? "<cbc:Description>Kasım 2026, uzaktan</cbc:Description>" : ""}</cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="USD">${para(fiyat)}</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>`;
+});
+const kdvToplam = Object.values(kdvGrup).reduce((t, g) => t + g.kdv, 0);
+const tevkifatToplam = tevkifatlar.reduce((t, x) => t + x.tutar, 0);
+const vergiDahil = matrahToplam + kdvToplam;
+const odenecek = vergiDahil - tevkifatToplam;
+
+writeFileSync(
+  join(HEDEF, "sablonsuz-dovizli-tevkifatli.xml"),
+  `<?xml version="1.0" encoding="UTF-8"?>
+<Invoice ${NS}>
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>TR1.2</cbc:CustomizationID>
+  <cbc:ProfileID>TICARIFATURA</cbc:ProfileID>
+  <cbc:ID>DVZ2026000000021</cbc:ID>
+  <cbc:CopyIndicator>false</cbc:CopyIndicator>
+  <cbc:UUID>8b7a6c5d-4e3f-4a2b-9c1d-0e9f8a7b6c5d</cbc:UUID>
+  <cbc:IssueDate>2026-11-05</cbc:IssueDate>
+  <cbc:IssueTime>14:35:12.0000000+03:00</cbc:IssueTime>
+  <cbc:InvoiceTypeCode>TEVKIFAT</cbc:InvoiceTypeCode>
+  <cbc:Note>Şablonsuz sentetik örnek: standart şablon döviz, iskonto, tevkifat ve istisnayı göstermeli.</cbc:Note>
+  <cbc:Note>Gerçek bir fatura değildir.</cbc:Note>
+  <cbc:DocumentCurrencyCode>USD</cbc:DocumentCurrencyCode>
+  <cbc:LineCountNumeric>${satirlar.length}</cbc:LineCountNumeric>
+  <cac:OrderReference><cbc:ID>SIP-2026-0412</cbc:ID><cbc:IssueDate>2026-10-28</cbc:IssueDate></cac:OrderReference>
+  <cac:DespatchDocumentReference><cbc:ID>IRS2026000000015</cbc:ID><cbc:IssueDate>2026-11-03</cbc:IssueDate></cac:DespatchDocumentReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:WebsiteURI>https://ornek.invalid</cbc:WebsiteURI>
+      <cac:PartyIdentification><cbc:ID schemeID="VKN">9990000001</cbc:ID></cac:PartyIdentification>
+      <cac:PartyIdentification><cbc:ID schemeID="MERSISNO">0999000000100015</cbc:ID></cac:PartyIdentification>
+      <cac:PartyName><cbc:Name>ÖRNEK YAZILIM VE DANIŞMANLIK TİCARET A.Ş.</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Çiçek Sokak</cbc:StreetName><cbc:BuildingNumber>7</cbc:BuildingNumber><cbc:Room>3</cbc:Room>
+        <cbc:CitySubdivisionName>Çankaya</cbc:CitySubdivisionName><cbc:CityName>ANKARA</cbc:CityName><cbc:PostalZone>06680</cbc:PostalZone>
+        <cac:Country><cbc:Name>Türkiye</cbc:Name></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>Kavaklıdere</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>
+      <cac:Contact><cbc:Telephone>0312 000 00 00</cbc:Telephone><cbc:ElectronicMail>fatura@ornek.invalid</cbc:ElectronicMail></cac:Contact>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyIdentification><cbc:ID schemeID="TCKN">10000000146</cbc:ID></cac:PartyIdentification>
+      <cac:PostalAddress>
+        <cbc:StreetName>Gül Sokak</cbc:StreetName><cbc:BuildingNumber>12</cbc:BuildingNumber>
+        <cbc:CitySubdivisionName>Karşıyaka</cbc:CitySubdivisionName><cbc:CityName>İZMİR</cbc:CityName>
+        <cac:Country><cbc:Name>Türkiye</cbc:Name></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>Karşıyaka</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>
+      <cac:Person><cbc:FirstName>Ayşe Gül</cbc:FirstName><cbc:FamilyName>Öztürkoğlu</cbc:FamilyName></cac:Person>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode>42</cbc:PaymentMeansCode>
+    <cbc:PaymentDueDate>2026-12-05</cbc:PaymentDueDate>
+    <cac:PayeeFinancialAccount>
+      <cbc:ID>TR00 0000 0000 0000 0000 0000 00</cbc:ID>
+      <cbc:CurrencyCode>USD</cbc:CurrencyCode>
+      <cac:FinancialInstitutionBranch><cbc:Name>Örnek Bankası Kızılay Şubesi</cbc:Name></cac:FinancialInstitutionBranch>
+    </cac:PayeeFinancialAccount>
+  </cac:PaymentMeans>
+  <cac:PricingExchangeRate>
+    <cbc:SourceCurrencyCode>USD</cbc:SourceCurrencyCode>
+    <cbc:TargetCurrencyCode>TRY</cbc:TargetCurrencyCode>
+    <cbc:CalculationRate>41.2345</cbc:CalculationRate>
+  </cac:PricingExchangeRate>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="USD">${para(kdvToplam)}</cbc:TaxAmount>${Object.entries(kdvGrup)
+      .map(
+        ([oran, g]) => `
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="USD">${para(g.matrah)}</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="USD">${para(g.kdv)}</cbc:TaxAmount>
+      <cbc:Percent>${oran}</cbc:Percent>
+      <cac:TaxCategory>${g.istisna ? `<cbc:TaxExemptionReasonCode>${g.istisna}</cbc:TaxExemptionReasonCode><cbc:TaxExemptionReason>Diğer istisnalar (sentetik örnek)</cbc:TaxExemptionReason>` : ""}<cac:TaxScheme><cbc:Name>KDV GERCEK</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>`,
+      )
+      .join("")}
+  </cac:TaxTotal>
+  <cac:WithholdingTaxTotal>
+    <cbc:TaxAmount currencyID="USD">${para(tevkifatToplam)}</cbc:TaxAmount>${tevkifatlar
+      .map(
+        (x) => `
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="USD">${para(x.matrah)}</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="USD">${para(x.tutar)}</cbc:TaxAmount>
+      <cbc:Percent>${x.oran}</cbc:Percent>
+      <cac:TaxCategory><cac:TaxScheme><cbc:Name>ETÜT, PLAN-PROJE, DANIŞMANLIK (örnek)</cbc:Name><cbc:TaxTypeCode>602</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>`,
+      )
+      .join("")}
+  </cac:WithholdingTaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="USD">${para(matrahToplam)}</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="USD">${para(matrahToplam)}</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="USD">${para(vergiDahil)}</cbc:TaxInclusiveAmount>
+    <cbc:AllowanceTotalAmount currencyID="USD">${para(iskontoToplam)}</cbc:AllowanceTotalAmount>
+    <cbc:PayableAmount currencyID="USD">${para(odenecek)}</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>${satirXml.join("")}
+</Invoice>
+`,
+  "utf8",
+);
+
+// Şablonsuz e-İrsaliye: şablonlu örnekten ek çıkarılarak
+const irsaliyeSablonlu = readFileSync(join(HEDEF, "eirsaliye-ornek.xml"), "utf8");
+writeFileSync(
+  join(HEDEF, "eirsaliye-sablonsuz.xml"),
+  irsaliyeSablonlu
+    .replace(/\s*<cac:AdditionalDocumentReference>[\s\S]*?<\/cac:AdditionalDocumentReference>/, "")
+    .replace("IRS2026000000015", "IRS2026000000016")
+    .replace("6f5e4d3c-2b1a-4f0e-9d8c-7b6a5f4e3d2c", "6f5e4d3c-2b1a-4f0e-9d8c-7b6a5f4e3d2d"),
+  "utf8",
+);
+
 console.log(`Örnekler yazıldı: ${HEDEF}`);
+console.log(`  sablonsuz-dovizli-tevkifatli.xml: matrah ${para(matrahToplam)}, KDV ${para(kdvToplam)}, tevkifat ${para(tevkifatToplam)}, ödenecek ${para(odenecek)} USD`);

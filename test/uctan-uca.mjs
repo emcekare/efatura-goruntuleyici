@@ -179,11 +179,70 @@ try {
     icerir(metin, "Şükrü Güneşoğlu", "şoför");
   });
 
-  await dene("şablonsuz faturada okunur ham XML", async () => {
+  await dene("şablonsuz fatura standart şablonla gösterilir", async () => {
     await xmlAc("sablonsuz-fatura.xml");
-    esitMi(await sayfa.locator("#faturaCercevesi").isVisible(), false, "iframe gizli");
+    const metin = await cerceveMetni("SBL2026000000007");
+    icerir(metin, "e-FATURA", "başlık");
+    icerir(metin, "38.705,40 TL", "ödenecek tutar");
+    icerir(metin, "standart şablonuyla oluşturulmuştur", "dipnot");
+    icerir(await sayfa.locator("#not").textContent(), "standart şablon", "uyarı notu");
+    esitMi(await sayfa.locator("#sablonDugmesi").isVisible(), false, "şablon geçişi yok (tek şablon)");
+    await sayfa.click("#gorunumDugmesi");
     icerir(await sayfa.locator("#hamXml").textContent(), "<cbc:ID>SBL2026000000007</cbc:ID>", "ham XML");
-    icerir(await sayfa.locator("#not").textContent(), "şablon", "uyarı notu");
+  });
+
+  await dene("standart şablon: döviz, iskonto, tevkifat, istisna, şahıs alıcı", async () => {
+    await xmlAc("sablonsuz-dovizli-tevkifatli.xml");
+    const metin = await cerceveMetni("DVZ2026000000021");
+    for (const [aranan, neden] of [
+      ["Ayşe Gül Öztürkoğlu", "şahıs alıcı"],
+      ["TCKN: 10000000146", "TCKN"],
+      ["Mersis No: 0999000000100015", "Mersis"],
+      ["1 USD = 41,2345 TL", "döviz kuru"],
+      ["05-11-2026 14:35:12", "tarih ve saat"],
+      ["IRS2026000000015", "irsaliye referansı"],
+      ["%10", "iskonto oranı"],
+      ["114,00 USD", "iskonto tutarı"],
+      ["KDV Tevkifatı (%50)", "tevkifat"],
+      ["102,60 USD", "tevkifat tutarı"],
+      ["Hesaplanan KDV (%20)", "KDV %20"],
+      ["Hesaplanan KDV (%10)", "KDV %10"],
+      ["351", "istisna kodu"],
+      ["2.058,60 USD", "ödenecek"],
+      ["TR00 0000 0000 0000 0000 0000 00", "IBAN"],
+      ["Saat", "birim adı"],
+    ]) icerir(metin, aranan, neden);
+    await goruntu("standart-sablon");
+  });
+
+  await dene("standart şablon: şablonsuz e-İrsaliye", async () => {
+    await xmlAc("eirsaliye-sablonsuz.xml");
+    const metin = await cerceveMetni("IRS2026000000016");
+    icerir(metin, "e-İRSALİYE", "başlık");
+    icerir(metin, "Şoför: Şükrü Güneşoğlu", "şoför");
+    icerir(metin, "250 Kg", "miktar + birim");
+  });
+
+  await dene("standart şablon polyfill ile de çalışır", async () => {
+    const adres = await xmlAc("sablonsuz-dovizli-tevkifatli.xml");
+    await sayfa.goto(adres.replace("viewer.html#", "viewer.html?polyfill=1#"));
+    await sayfa.waitForSelector("#yukleniyor", { state: "hidden", timeout: 30000 });
+    const metin = await cerceveMetni("2.058,60");
+    icerir(metin, "2.058,60 USD", "ödenecek");
+    icerir(metin, "1 USD = 41,2345 TL", "kur");
+  });
+
+  await dene("şablonlu faturada standart şablona geçiş", async () => {
+    await xmlAc("efatura-ornek.xml");
+    esitMi(await sayfa.locator("#sablonDugmesi").isVisible(), true, "geçiş düğmesi");
+    await sayfa.click("#sablonDugmesi");
+    icerir(await cerceveMetni("standart şablonuyla"), "standart şablonuyla oluşturulmuştur", "standart görünüm");
+    icerir(await sayfa.locator("#sablonAdi").textContent(), "standart", "şablon etiketi");
+    await sayfa.click("#gorunumDugmesi"); // ham
+    await sayfa.click("#gorunumDugmesi"); // son fatura görünümüne dön
+    icerir(await cerceveMetni("standart şablonuyla"), "standart şablonuyla", "son seçilen şablon korunur");
+    await sayfa.click("#sablonDugmesi");
+    icerir(await sayfa.locator("#sablonAdi").textContent(), "ORN2026000000001.xslt", "belgenin şablonu");
   });
 
   await dene("ham XML / fatura görünümü arasında geçiş", async () => {

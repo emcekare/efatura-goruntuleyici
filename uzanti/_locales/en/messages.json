@@ -33,5 +33,11 @@
   "notBelgeBulunamadi": { "message": "Document not found. If the browser was restarted, open the file again." },
   "notDosyaOkunamadi": { "message": "Could not read file: $AD$", "placeholders": { "ad": { "content": "$1" } } },
 
-  "baslikFatura": { "message": "$NO$ — e-Invoice Viewer", "placeholders": { "no": { "content": "$1" } } }
+  "baslikFatura": { "message": "$NO$ — e-Invoice Viewer", "placeholders": { "no": { "content": "$1" } } },
+
+  "aracStandartSablon": {"message": "Standard template"},
+  "aracBelgeSablonu": {"message": "Invoice's own template"},
+  "sablonStandart": {"message": "standard"},
+  "notStandartSablon": {"message": "This document has no view template; showing it with the extension's standard template."},
+  "notBelgeSablonuHatali": {"message": "Could not apply the document's own template ($HATA$); showing the standard template.", "placeholders": {"hata": {"content": "$1"}}}
 }
