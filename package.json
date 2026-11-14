@@ -1,9 +1,17 @@
 {
-  "name": "efatura-goruntuleyici-uzanti",
+  "name": "efatura-goruntuleyici",
   "version": "0.1.0",
   "private": true,
   "description": "e-Fatura / e-Arşiv / e-İrsaliye (UBL-TR) XML dosyalarını gömülü XSLT şablonuyla gösteren tarayıcı uzantısı (Chrome, Firefox).",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emcekare/efatura-goruntuleyici.git"
+  },
+  "homepage": "https://github.com/emcekare/efatura-goruntuleyici#readme",
+  "bugs": {
+    "url": "https://github.com/emcekare/efatura-goruntuleyici/issues"
+  },
   "type": "module",
   "scripts": {
     "test": "node --test test/*.test.mjs",
