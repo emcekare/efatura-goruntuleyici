@@ -1,0 +1,44 @@
+/* Ortak renkler: sıcak krem zemin, koyu orman yeşili vurgu. Yalnızca sistem yazı tipleri (ağ yok). */
+:root {
+  --zemin: #f5f1ea;
+  --yuzey: #fffdf8;
+  --cizgi: #e2dccf;
+  --murekkep: #1d241f;
+  --soluk: #5c665f;
+  --vurgu: #1f3a2e;
+  --vurgu-acik: #2e5443;
+  --uyari: #9a4a24;
+  --yazi: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --baslik-yazi: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --es-aralikli: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", monospace;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--zemin);
+  color: var(--murekkep);
+  font: 14px/1.45 var(--yazi);
+}
+
+button, .birincil, .ikincil {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+  border: 1px solid var(--vurgu);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.birincil { background: var(--vurgu); color: var(--zemin); }
+.birincil:hover { background: var(--vurgu-acik); }
+.ikincil { background: transparent; color: var(--vurgu); }
+.ikincil:hover { background: rgba(31, 58, 46, 0.08); }
+button:focus-visible, label:focus-within { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+
+[hidden] { display: none !important; }

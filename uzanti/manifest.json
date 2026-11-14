@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_uzantiAdi__",
+  "short_name": "__MSG_kisaAd__",
+  "description": "__MSG_uzantiAciklamasi__",
+  "version": "0.1.0",
+  "default_locale": "tr",
+  "icons": {
+    "16": "simgeler/simge-16.png",
+    "32": "simgeler/simge-32.png",
+    "48": "simgeler/simge-48.png",
+    "128": "simgeler/simge-128.png"
+  },
+  "action": {
+    "default_title": "__MSG_uzantiAdi__",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "simgeler/simge-16.png",
+      "32": "simgeler/simge-32.png"
+    }
+  },
+  "background": {
+    "service_worker": "arkaplan.js",
+    "scripts": ["arkaplan.js"],
+    "type": "module"
+  },
+  "permissions": ["storage", "contextMenus", "activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "file:///*"],
+      "include_globs": ["*.xml", "*.xml?*", "*.XML", "*.XML?*"],
+      "js": ["icerik.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{13679843-a0f2-4342-a3af-e7fa34aa6f4b}",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}

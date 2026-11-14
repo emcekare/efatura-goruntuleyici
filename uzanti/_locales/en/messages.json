@@ -1,0 +1,37 @@
+{
+  "uzantiAdi": { "message": "e-Invoice Viewer (Türkiye)" },
+  "kisaAd": { "message": "e-Invoice" },
+  "uzantiAciklamasi": { "message": "Renders Turkish e-Fatura, e-Arşiv and e-İrsaliye (UBL-TR) XML files with their embedded XSLT view template. Works fully offline, makes no network requests." },
+
+  "menuSekmeyiAc": { "message": "Show this XML as an invoice" },
+  "menuDosyaAc": { "message": "Open XML file…" },
+
+  "uyariXmlDegil": { "message": "This tab does not contain an XML document. Open the e-invoice XML file and try again, or drag it onto the viewer." },
+  "uyariSekmeOkunamadi": { "message": "Could not read this tab. For local files, enable \"Allow access to file URLs\" in the extension settings, or drag the file onto the viewer." },
+
+  "popupSekmeyiAc": { "message": "Show the XML in this tab" },
+  "popupDosyaAc": { "message": "Open file / drag and drop" },
+  "popupOtomatik": { "message": "Open .xml tabs as invoices automatically" },
+  "popupAgNotu": { "message": "The extension makes no network requests; invoices never leave your computer." },
+
+  "acilisBaslik": { "message": "Drop an e-invoice XML file here" },
+  "acilisAlt": { "message": "e-Fatura, e-Arşiv, e-İrsaliye (UBL-TR). Each extra file opens in its own tab." },
+  "dosyaSec": { "message": "Choose file" },
+  "yukleniyor": { "message": "Opening…" },
+
+  "aracYazdir": { "message": "Print" },
+  "aracHamXml": { "message": "Raw XML" },
+  "aracFatura": { "message": "Invoice view" },
+  "aracBaskaDosya": { "message": "Open another file" },
+  "aracSablon": { "message": "Template: $AD$", "placeholders": { "ad": { "content": "$1" } } },
+
+  "notSablonYok": { "message": "This document has no view template (XSLT); showing raw XML." },
+  "notUblDegil": { "message": "This file is not a UBL-TR document (e-invoice, e-despatch); showing raw XML." },
+  "notXmlBozuk": { "message": "Could not parse the XML (corrupt or not XML); showing the content as is." },
+  "notDonusumHatasi": { "message": "Could not apply the view template ($HATA$); showing raw XML.", "placeholders": { "hata": { "content": "$1" } } },
+  "notXsltYok": { "message": "XSLT is not available in this browser; showing raw XML." },
+  "notBelgeBulunamadi": { "message": "Document not found. If the browser was restarted, open the file again." },
+  "notDosyaOkunamadi": { "message": "Could not read file: $AD$", "placeholders": { "ad": { "content": "$1" } } },
+
+  "baslikFatura": { "message": "$NO$ — e-Invoice Viewer", "placeholders": { "no": { "content": "$1" } } }
+}

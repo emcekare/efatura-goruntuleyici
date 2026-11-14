@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.zip
+web-ext-artifacts/
+# Gerçek faturalar depoya girmesin: elle test için buraya koyun
+yerel-faturalar/

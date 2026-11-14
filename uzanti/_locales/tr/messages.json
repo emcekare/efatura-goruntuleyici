@@ -1,0 +1,37 @@
+{
+  "uzantiAdi": { "message": "e-Fatura Görüntüleyici" },
+  "kisaAd": { "message": "e-Fatura" },
+  "uzantiAciklamasi": { "message": "e-Fatura, e-Arşiv ve e-İrsaliye XML dosyalarını içlerindeki görünüm şablonuyla, kağıttaki halleriyle gösterir. Tamamen yerel çalışır, ağa istek atmaz." },
+
+  "menuSekmeyiAc": { "message": "Bu XML'i fatura olarak göster" },
+  "menuDosyaAc": { "message": "XML dosyası aç…" },
+
+  "uyariXmlDegil": { "message": "Bu sekmede bir XML belgesi yok. e-Fatura XML dosyasını açıp tekrar deneyin ya da dosyayı görüntüleyiciye sürükleyin." },
+  "uyariSekmeOkunamadi": { "message": "Bu sekmenin içeriği okunamadı. Yerel dosyalar için uzantı ayarlarından \"Dosya URL'lerine erişime izin ver\" seçeneğini açın ya da dosyayı görüntüleyiciye sürükleyin." },
+
+  "popupSekmeyiAc": { "message": "Bu sekmedeki XML'i göster" },
+  "popupDosyaAc": { "message": "Dosya aç / sürükle-bırak" },
+  "popupOtomatik": { "message": ".xml sekmelerini otomatik fatura olarak aç" },
+  "popupAgNotu": { "message": "Uzantı ağa hiçbir istek atmaz; faturalar bilgisayarınızdan çıkmaz." },
+
+  "acilisBaslik": { "message": "e-Fatura XML dosyasını buraya bırakın" },
+  "acilisAlt": { "message": "e-Fatura, e-Arşiv, e-İrsaliye (UBL-TR). Birden fazla dosya bırakırsanız her biri ayrı sekmede açılır." },
+  "dosyaSec": { "message": "Dosya seç" },
+  "yukleniyor": { "message": "Açılıyor…" },
+
+  "aracYazdir": { "message": "Yazdır" },
+  "aracHamXml": { "message": "Ham XML" },
+  "aracFatura": { "message": "Fatura görünümü" },
+  "aracBaskaDosya": { "message": "Başka dosya aç" },
+  "aracSablon": { "message": "Şablon: $AD$", "placeholders": { "ad": { "content": "$1" } } },
+
+  "notSablonYok": { "message": "Bu belgede görünüm şablonu (XSLT) yok; ham XML gösteriliyor." },
+  "notUblDegil": { "message": "Bu dosya bir UBL-TR belgesi (e-Fatura, e-İrsaliye) değil; ham XML gösteriliyor." },
+  "notXmlBozuk": { "message": "XML okunamadı (dosya bozuk ya da XML değil); içerik olduğu gibi gösteriliyor." },
+  "notDonusumHatasi": { "message": "Görünüm şablonu uygulanamadı ($HATA$); ham XML gösteriliyor.", "placeholders": { "hata": { "content": "$1" } } },
+  "notXsltYok": { "message": "Bu tarayıcıda XSLT dönüşümü yapılamadı; ham XML gösteriliyor." },
+  "notBelgeBulunamadi": { "message": "Belge bulunamadı. Tarayıcı kapatılıp açıldıysa dosyayı yeniden açın." },
+  "notDosyaOkunamadi": { "message": "Dosya okunamadı: $AD$", "placeholders": { "ad": { "content": "$1" } } },
+
+  "baslikFatura": { "message": "$NO$ — e-Fatura Görüntüleyici", "placeholders": { "no": { "content": "$1" } } }
+}

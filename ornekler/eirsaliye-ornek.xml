@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DespatchAdvice xmlns="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2"
+  xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+  xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>TR1.2.1</cbc:CustomizationID>
+  <cbc:ProfileID>TEMELIRSALIYE</cbc:ProfileID>
+  <cbc:ID>IRS2026000000015</cbc:ID>
+  <cbc:UUID>6f5e4d3c-2b1a-4f0e-9d8c-7b6a5f4e3d2c</cbc:UUID>
+  <cbc:IssueDate>2026-11-03</cbc:IssueDate>
+  <cbc:DespatchAdviceTypeCode>SEVK</cbc:DespatchAdviceTypeCode>
+  <cac:AdditionalDocumentReference>
+    <cbc:ID>ORNEK</cbc:ID>
+    <cbc:IssueDate>2026-11-02</cbc:IssueDate>
+    <cac:Attachment>
+      <cbc:EmbeddedDocumentBinaryObject characterSetCode="UTF-8" encodingCode="Base64" filename="irsaliye.xslt" mimeCode="application/xml">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHhzbDpzdHlsZXNoZWV0IHZl
+cnNpb249IjEuMCIKICB4bWxuczp4c2w9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvWFNML1RyYW5z
+Zm9ybSIKICB4bWxuczpkYT0idXJuOm9hc2lzOm5hbWVzOnNwZWNpZmljYXRpb246dWJsOnNjaGVt
+YTp4c2Q6RGVzcGF0Y2hBZHZpY2UtMiIKICB4bWxuczpjYWM9InVybjpvYXNpczpuYW1lczpzcGVj
+aWZpY2F0aW9uOnVibDpzY2hlbWE6eHNkOkNvbW1vbkFnZ3JlZ2F0ZUNvbXBvbmVudHMtMiIKICB4
+bWxuczpjYmM9InVybjpvYXNpczpuYW1lczpzcGVjaWZpY2F0aW9uOnVibDpzY2hlbWE6eHNkOkNv
+bW1vbkJhc2ljQ29tcG9uZW50cy0yIgogIGV4Y2x1ZGUtcmVzdWx0LXByZWZpeGVzPSJkYSBjYWMg
+Y2JjIj4KICA8eHNsOm91dHB1dCBtZXRob2Q9Imh0bWwiIGVuY29kaW5nPSJVVEYtOCIvPgogIDx4
+c2w6dGVtcGxhdGUgbWF0Y2g9Ii9kYTpEZXNwYXRjaEFkdmljZSI+CiAgICA8aHRtbD48aGVhZD48
+bWV0YSBjaGFyc2V0PSJVVEYtOCIvPjx0aXRsZT7EsHJzYWxpeWU8L3RpdGxlPgogICAgICA8c3R5
+bGU+CiAgICAgICAgYm9keSB7IGZvbnQtZmFtaWx5OiBUYWhvbWEsIHNhbnMtc2VyaWY7IGZvbnQt
+c2l6ZTogMTJweDsgbWF4LXdpZHRoOiA3NjBweDsgbWFyZ2luOiAyNHB4IGF1dG87IH0KICAgICAg
+ICBoMSB7IHRleHQtYWxpZ246IGNlbnRlcjsgbGV0dGVyLXNwYWNpbmc6IDJweDsgfQogICAgICAg
+IHRhYmxlIHsgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsgd2lkdGg6IDEwMCU7IG1hcmdpbi10
+b3A6IDEycHg7IH0KICAgICAgICB0ZCwgdGggeyBib3JkZXI6IDFweCBzb2xpZCAjODg4OyBwYWRk
+aW5nOiA0cHggOHB4OyB9CiAgICAgICAgdGggeyBiYWNrZ3JvdW5kOiAjZWVlOyB9CiAgICAgIDwv
+c3R5bGU+PC9oZWFkPgogICAgICA8Ym9keT4KICAgICAgICA8cD48Yj48eHNsOnZhbHVlLW9mIHNl
+bGVjdD0iY2FjOkRlc3BhdGNoU3VwcGxpZXJQYXJ0eS9jYWM6UGFydHkvY2FjOlBhcnR5TmFtZS9j
+YmM6TmFtZSIvPjwvYj48YnIvPgogICAgICAgICAgIEFsxLFjxLE6IDx4c2w6dmFsdWUtb2Ygc2Vs
+ZWN0PSJjYWM6RGVsaXZlcnlDdXN0b21lclBhcnR5L2NhYzpQYXJ0eS9jYWM6UGFydHlOYW1lL2Ni
+YzpOYW1lIi8+PC9wPgogICAgICAgIDxoMT5lLcSwUlNBTMSwWUU8L2gxPgogICAgICAgIDx0YWJs
+ZT4KICAgICAgICAgIDx0cj48dGQ+xLByc2FsaXllIE5vPC90ZD48dGQ+PHhzbDp2YWx1ZS1vZiBz
+ZWxlY3Q9ImNiYzpJRCIvPjwvdGQ+PC90cj4KICAgICAgICAgIDx0cj48dGQ+RMO8emVubGVtZSBU
+YXJpaGk8L3RkPjx0ZD48eHNsOnZhbHVlLW9mIHNlbGVjdD0iY2JjOklzc3VlRGF0ZSIvPjwvdGQ+
+PC90cj4KICAgICAgICAgIDx0cj48dGQ+U2V2ayBUYXJpaGk8L3RkPjx0ZD48eHNsOnZhbHVlLW9m
+IHNlbGVjdD0iY2FjOlNoaXBtZW50L2NhYzpEZWxpdmVyeS9jYWM6RGVzcGF0Y2gvY2JjOkFjdHVh
+bERlc3BhdGNoRGF0ZSIvPjwvdGQ+PC90cj4KICAgICAgICAgIDx0cj48dGQ+UGxha2E8L3RkPjx0
+ZD48eHNsOnZhbHVlLW9mIHNlbGVjdD0iY2FjOlNoaXBtZW50L2NhYzpTaGlwbWVudFN0YWdlL2Nh
+YzpUcmFuc3BvcnRNZWFucy9jYWM6Um9hZFRyYW5zcG9ydC9jYmM6TGljZW5zZVBsYXRlSUQiLz48
+L3RkPjwvdHI+CiAgICAgICAgICA8dHI+PHRkPsWeb2bDtnI8L3RkPjx0ZD48eHNsOnZhbHVlLW9m
+IHNlbGVjdD0iY29uY2F0KGNhYzpTaGlwbWVudC9jYWM6U2hpcG1lbnRTdGFnZS9jYWM6RHJpdmVy
+UGVyc29uL2NiYzpGaXJzdE5hbWUsICcgJywgY2FjOlNoaXBtZW50L2NhYzpTaGlwbWVudFN0YWdl
+L2NhYzpEcml2ZXJQZXJzb24vY2JjOkZhbWlseU5hbWUpIi8+PC90ZD48L3RyPgogICAgICAgIDwv
+dGFibGU+CiAgICAgICAgPHRhYmxlPgogICAgICAgICAgPHRyPjx0aD5TxLFyYTwvdGg+PHRoPk1h
+bDwvdGg+PHRoPk1pa3RhcjwvdGg+PC90cj4KICAgICAgICAgIDx4c2w6Zm9yLWVhY2ggc2VsZWN0
+PSJjYWM6RGVzcGF0Y2hMaW5lIj4KICAgICAgICAgICAgPHRyPjx0ZD48eHNsOnZhbHVlLW9mIHNl
+bGVjdD0iY2JjOklEIi8+PC90ZD48dGQ+PHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNhYzpJdGVtL2Ni
+YzpOYW1lIi8+PC90ZD4KICAgICAgICAgICAgICAgIDx0ZD48eHNsOnZhbHVlLW9mIHNlbGVjdD0i
+Y2JjOkRlbGl2ZXJlZFF1YW50aXR5Ii8+IDx4c2w6dmFsdWUtb2Ygc2VsZWN0PSJjYmM6RGVsaXZl
+cmVkUXVhbnRpdHkvQHVuaXRDb2RlIi8+PC90ZD48L3RyPgogICAgICAgICAgPC94c2w6Zm9yLWVh
+Y2g+CiAgICAgICAgPC90YWJsZT4KICAgICAgPC9ib2R5PjwvaHRtbD4KICA8L3hzbDp0ZW1wbGF0
+ZT4KPC94c2w6c3R5bGVzaGVldD4K</cbc:EmbeddedDocumentBinaryObject>
+    </cac:Attachment>
+  </cac:AdditionalDocumentReference>
+  <cac:DespatchSupplierParty><cac:Party><cac:PartyName><cbc:Name>ÖRNEK LOJİSTİK VE DEPOLAMA A.Ş.</cbc:Name></cac:PartyName></cac:Party></cac:DespatchSupplierParty>
+  <cac:DeliveryCustomerParty><cac:Party><cac:PartyName><cbc:Name>DENEME GIDA İTHALAT İHRACAT LTD. ŞTİ.</cbc:Name></cac:PartyName></cac:Party></cac:DeliveryCustomerParty>
+  <cac:Shipment>
+    <cbc:ID>1</cbc:ID>
+    <cac:ShipmentStage>
+      <cac:TransportMeans><cac:RoadTransport><cbc:LicensePlateID>06 ÖRN 123</cbc:LicensePlateID></cac:RoadTransport></cac:TransportMeans>
+      <cac:DriverPerson><cbc:FirstName>Şükrü</cbc:FirstName><cbc:FamilyName>Güneşoğlu</cbc:FamilyName><cbc:NationalityID>TR</cbc:NationalityID></cac:DriverPerson>
+    </cac:ShipmentStage>
+    <cac:Delivery><cac:Despatch><cbc:ActualDespatchDate>2026-11-03</cbc:ActualDespatchDate></cac:Despatch></cac:Delivery>
+  </cac:Shipment>
+  <cac:DespatchLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:DeliveredQuantity unitCode="KGM">250</cbc:DeliveredQuantity>
+    <cac:Item><cbc:Name>Kuru incir (Aydın, 1. sınıf)</cbc:Name></cac:Item>
+  </cac:DespatchLine>
+  <cac:DespatchLine>
+    <cbc:ID>2</cbc:ID>
+    <cbc:DeliveredQuantity unitCode="C62">40</cbc:DeliveredQuantity>
+    <cac:Item><cbc:Name>Ahşap palet</cbc:Name></cac:Item>
+  </cac:DespatchLine>
+</DespatchAdvice>

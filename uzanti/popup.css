@@ -1,0 +1,12 @@
+body {
+  width: 300px;
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+h1 { font: 600 17px/1.3 var(--baslik-yazi); margin: 0 0 4px; color: var(--vurgu); }
+button { justify-content: center; width: 100%; }
+.secenek { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; margin-top: 4px; cursor: pointer; }
+.secenek input { margin: 2px 0 0; accent-color: var(--vurgu); }
+.not { font-size: 11px; color: var(--soluk); margin: 2px 0 0; }
