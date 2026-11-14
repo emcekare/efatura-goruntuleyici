@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+# Örnek XML baytları olduğu gibi kalsın (windows-1254 dahil)
+ornekler/*.xml -text
+uzanti/vendor/** -text
