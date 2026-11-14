@@ -78,14 +78,24 @@ Geçici yükleme (Firefox kapanınca kalkar):
 1. `about:debugging#/runtime/this-firefox` → **Geçici Eklenti Yükle…**
 2. `uzanti/manifest.json` dosyasını seçin.
 
-Kalıcı kurulum için uzantının Mozilla tarafından imzalanması gerekir (AMO; ücretsiz, listelenmeden de imzalatılabilir). İmzalı `.xpi` için: addons.mozilla.org'da hesap açıp **Geliştirici Merkezi → API anahtarları**'ndan anahtar alın, sonra:
+#### Kalıcı kurulum: Mozilla imzası (ücretsiz)
 
-```bash
-npm run paketle
-npx web-ext sign --source-dir dist/firefox --channel unlisted --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
-```
+Firefox yalnızca Mozilla'nın imzaladığı uzantıları kalıcı kurar. Mağazada listelemeden ("unlisted") imzalatıp `.xpi` dosyasını kendiniz kurabilirsiniz:
 
-Oluşan `.xpi` dosyasını Firefox'a sürükleyerek kalıcı kurabilirsiniz.
+1. [addons.mozilla.org](https://addons.mozilla.org) üzerinde hesap açın (Mozilla hesabı).
+2. [Geliştirici Merkezi → API anahtarları](https://addons.mozilla.org/developers/addon/api/key/) sayfasında anahtar oluşturun: **JWT issuer** (`user:…`) ve **JWT secret**. Bunları kimseyle paylaşmayın, depoya koymayın.
+3. Depo klasöründe, anahtarları yalnızca o terminal oturumu için ortam değişkeni olarak verip imzalatın (PowerShell):
+
+   ```powershell
+   $env:WEB_EXT_API_KEY = Read-Host "JWT issuer"
+   $env:WEB_EXT_API_SECRET = [System.Net.NetworkCredential]::new("", (Read-Host "JWT secret" -AsSecureString)).Password
+   npm run imzala:firefox
+   ```
+
+   Otomatik doğrulama genelde birkaç dakika sürer. İmzalı dosya `dist/imzali/` altına iner.
+4. `.xpi` dosyasını Firefox penceresine sürükleyin (ya da `about:addons` → dişli → **Dosyadan eklenti yükle…**) ve kurulumu onaylayın. Sonra uzantı penceresindeki **İzin ver**'e basın.
+
+Her yeni imza için `uzanti/manifest.json`'daki `version` artırılmalıdır (aynı sürüm ikinci kez imzalanamaz). Uzantı kimliği (`browser_specific_settings.gecko.id`) ilk imzadan sonra değiştirilmemelidir.
 
 ## Geliştirme
 

@@ -20,7 +20,8 @@
     "simgeler": "node araclar/simge-uret.mjs",
     "lint:firefox": "web-ext lint --source-dir uzanti",
     "paketle": "node araclar/paketle.mjs",
-    "firefox": "web-ext run --source-dir uzanti"
+    "firefox": "node araclar/paketle.mjs && web-ext run --source-dir dist/firefox",
+    "imzala:firefox": "node araclar/paketle.mjs && web-ext sign --source-dir dist/firefox --channel unlisted --artifacts-dir dist/imzali"
   },
   "devDependencies": {
     "@xmldom/xmldom": "0.9.12",
