@@ -355,6 +355,21 @@ try {
     if (xsltUyarilari.length) throw new Error(`uyarılar: ${xsltUyarilari.join(" | ")}`);
   });
 
+  await dene("olağan faturalarda uzantının konsoluna hata/uyarı düşmez", async () => {
+    // Chrome bunları uzantının hata listesine yazıyor; birikince uzantılar sayfası donuyordu
+    const iletiler = [];
+    const dinle = (m) => {
+      if (["error", "warning"].includes(m.type()) && (m.page()?.url() ?? "").startsWith("chrome-extension://")) iletiler.push(m.text().slice(0, 100));
+    };
+    baglam.on("console", dinle);
+    for (const ad of ["efatura-ornek.xml", "earsiv-pdf-ve-adsiz-sablon.xml", "sablonsuz-dovizli-tevkifatli.xml", "eirsaliye-ornek.xml", "windows-1254-fatura.xml"]) {
+      await xmlAc(ad);
+      await sayfa.waitForTimeout(500);
+    }
+    baglam.off("console", dinle);
+    if (iletiler.length) throw new Error(`${iletiler.length} ileti: ${[...new Set(iletiler)].join(" | ")}`);
+  });
+
   await dene("uzantı ağa istek atmadı (izleme sunucusu + istek dinleyici)", async () => {
     if (sizintilar.length) throw new Error(`sunucuya ulaşan istekler: ${sizintilar.join(", ")}`);
     if (disIstekler.size) throw new Error(`tarayıcıdan giden istekler: ${[...disIstekler.values()].join(", ")}`);

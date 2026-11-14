@@ -11,6 +11,26 @@ const POLYFILL_YOLU = "vendor/xslt-polyfill/xslt-polyfill.min.js";
 let polyfillSozu = null;
 
 /**
+ * Polyfill'in XSLT motoru (libxslt) uyarılarını (ör. "xsl:version: only 1.1 features
+ * are supported") yüklenirken bağladığı console.error/log ile basıyor. Chrome bunları
+ * uzantının hata listesine yığın izlemesiyle yazıyor; çok fatura açınca liste şişip
+ * uzantılar sayfası donuyor. Polyfill yüklenmeden önce konsol sarmalanır, dönüşüm
+ * sırasındaki motor çıktısı toplanıp tek bir debug satırı olarak kaydedilir.
+ */
+let motorSusturuluyor = false;
+const motorIletileri = [];
+
+function konsoluSarmala() {
+  for (const ad of ["error", "log"]) {
+    const asil = console[ad];
+    console[ad] = function (...degerler) {
+      if (motorSusturuluyor) motorIletileri.push(degerler.map(String).join(" "));
+      else asil.apply(console, degerler);
+    };
+  }
+}
+
+/**
  * XSLTProcessor'ı hazır eder.
  * @param {boolean} [polyfillZorla] yerleşik destek olsa bile polyfill'i kullan (Chrome'da varsayılan)
  * @returns {Promise<boolean>} dönüşüm yapılabilir mi
@@ -22,6 +42,7 @@ export async function xsltHazirla(polyfillZorla = false) {
     // Polyfill yerleşik desteği `new XSLTProcessor()` ile yokluyor; Chrome bunu da
     // "kullanımdan kaldırıldı" uyarısı olarak kaydediyor. Yerleşiği önce gizle.
     if (polyfillZorla && yerel) delete window.XSLTProcessor;
+    konsoluSarmala();
     window.xsltUsePolyfillOnlyIfNeeded = !polyfillZorla;
     window.xsltDontAutoloadXmlDocs = true;
     window.xsltPolyfillQuiet = true;
@@ -58,9 +79,17 @@ export function xsltUygula(xmlBelge, xslt) {
   const xslBelge = new DOMParser().parseFromString(xslt, "application/xml");
   if (xslBelge.getElementsByTagName("parsererror").length > 0) throw new Error("şablon okunamadı");
 
-  const islemci = new XSLTProcessor();
-  islemci.importStylesheet(xslBelge);
-  const sonuc = islemci.transformToDocument(xmlBelge);
+  let sonuc;
+  motorSusturuluyor = true;
+  motorIletileri.length = 0;
+  try {
+    const islemci = new XSLTProcessor();
+    islemci.importStylesheet(xslBelge);
+    sonuc = islemci.transformToDocument(xmlBelge);
+  } finally {
+    motorSusturuluyor = false;
+    if (motorIletileri.length) console.debug(`XSLT motoru ${motorIletileri.length} ileti verdi:`, motorIletileri.slice(0, 10));
+  }
   if (!sonuc?.documentElement) throw new Error("şablon boş çıktı üretti");
 
   const kok = sonuc.documentElement;

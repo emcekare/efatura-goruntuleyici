@@ -69,6 +69,9 @@ const ORTALAMA_STILI = "body{width:fit-content!important;margin-left:auto!import
 export function gosterimIcinHazirla(html, { ortala = false, duzenle } = {}) {
   const belge = new DOMParser().parseFromString(html, "text/html");
   duzenle?.(belge);
+  // Betikler sandbox'ta zaten çalışmıyor; Chrome her biri için konsola (ve uzantının
+  // hata listesine) "Blocked script execution" yazmasın diye çıkarılır.
+  for (const betik of Array.from(belge.getElementsByTagName("script"))) betik.remove();
   if (ortala) {
     const stil = belge.createElement("style");
     stil.textContent = ORTALAMA_STILI;
