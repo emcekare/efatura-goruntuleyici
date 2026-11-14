@@ -41,4 +41,15 @@ button, .birincil, .ikincil {
 .ikincil:hover { background: rgba(31, 58, 46, 0.08); }
 button:focus-visible, label:focus-within { outline: 2px solid var(--vurgu); outline-offset: 2px; }
 
+.izin-karti {
+  border: 1px solid #d9b48a;
+  background: #fbf1e3;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  text-align: left;
+}
+.izin-karti p { margin: 0 0 8px; color: var(--murekkep); }
+
 [hidden] { display: none !important; }

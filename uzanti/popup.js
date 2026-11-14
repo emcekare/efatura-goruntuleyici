@@ -6,8 +6,10 @@
 
 import { api, goruntuleyiciAdresi, sekmeyiGoruntule } from "./lib/aktarim.js";
 import { sayfayiCevir } from "./lib/dil.js";
+import { izinKartiniKur } from "./lib/izin.js";
 
 sayfayiCevir();
+izinKartiniKur(document.getElementById("izinKarti"), document.getElementById("izinDugmesi")).catch((e) => console.error(e));
 
 const otomatik = document.getElementById("otomatikAc");
 api.storage.local

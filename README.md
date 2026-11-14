@@ -67,12 +67,25 @@ Mağaza sürümü henüz yok. Kaynaktan yüklemek için:
 
 ### Firefox
 
+**Firefox'ta bilinmesi gerekenler**
+
+- Firefox, bilgisayardaki dosyalarda (`file://`) uzantıların çalışmasına izin vermiyor (MV2'de de, tüm izinler verilse de; Firefox 160'ta denendi). Bu yüzden bilgisayarınızdaki bir XML'i Firefox'ta açınca ham kod görünür. Yerel dosyaları uzantı simgesi → **Dosya aç** sayfasına sürükleyin ya da oradan seçin. Web'den açılan `.xml` adresleri otomatik açılır.
+- Firefox site erişimini kullanıcıya bırakıyor: ilk kurulumda açılan sayfada (ya da uzantı penceresinde) **İzin ver**'e basın. İzin verilmezse `.xml` sekmeleri otomatik açılmaz; dosya açma ve sağ tık yine çalışır.
+- Yerel dosyaların otomatik açılması gerekiyorsa Chrome / Edge kullanın (uzantı ayrıntılarında "Dosya URL'lerine erişime izin ver" açık olmalı).
+
 Geçici yükleme (Firefox kapanınca kalkar):
 
 1. `about:debugging#/runtime/this-firefox` → **Geçici Eklenti Yükle…**
 2. `uzanti/manifest.json` dosyasını seçin.
 
-Kalıcı kurulum için uzantının Mozilla tarafından imzalanması gerekir (AMO; ücretsiz, listelenmeden de imzalatılabilir).
+Kalıcı kurulum için uzantının Mozilla tarafından imzalanması gerekir (AMO; ücretsiz, listelenmeden de imzalatılabilir). İmzalı `.xpi` için: addons.mozilla.org'da hesap açıp **Geliştirici Merkezi → API anahtarları**'ndan anahtar alın, sonra:
+
+```bash
+npm run paketle
+npx web-ext sign --source-dir dist/firefox --channel unlisted --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+```
+
+Oluşan `.xpi` dosyasını Firefox'a sürükleyerek kalıcı kurabilirsiniz.
 
 ## Geliştirme
 

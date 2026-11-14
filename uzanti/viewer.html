@@ -27,6 +27,10 @@
   <main id="icerik">
     <section class="acilis" id="acilis" hidden>
       <div class="birakma-alani" id="birakmaAlani">
+        <div class="izin-karti" id="izinKarti" hidden>
+          <p data-i18n="izinAciklama"></p>
+          <button type="button" id="izinDugmesi" class="birincil" data-i18n="izinVer"></button>
+        </div>
         <svg class="acilis-simge" viewBox="0 0 48 48" aria-hidden="true">
           <path d="M12 4h18l10 10v30H12z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
           <path d="M30 4v10h10M18 24h16M18 30h16M18 36h10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
@@ -37,6 +41,7 @@
           <span data-i18n="dosyaSec"></span>
           <input type="file" id="dosyaGirdisi" accept=".xml,application/xml,text/xml" multiple>
         </label>
+        <p class="firefox-notu" id="firefoxNotu" data-i18n="firefoxYerelNot" hidden></p>
         <p class="ag-notu" data-i18n="popupAgNotu"></p>
       </div>
     </section>

@@ -110,6 +110,8 @@ hazirla(
   "firefox",
   (m) => {
     delete m.background.service_worker;
+    // Firefox MV3 site erişimini isteğe bağlı tutar; açıkça bildirilen izin çalışma anında istenebilir
+    m.host_permissions = ["http://*/*", "https://*/*"];
     // Firefox'ta polyfill yok; WASM izni de gerekmez
     m.content_security_policy.extension_pages = m.content_security_policy.extension_pages.replace(" 'wasm-unsafe-eval'", "");
   },

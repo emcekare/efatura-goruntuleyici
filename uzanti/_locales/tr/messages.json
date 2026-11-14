@@ -39,5 +39,9 @@
   "aracBelgeSablonu": {"message": "Faturanın şablonu"},
   "sablonStandart": {"message": "standart"},
   "notStandartSablon": {"message": "Bu belgede görünüm şablonu yok; uzantının standart şablonuyla gösteriliyor."},
-  "notBelgeSablonuHatali": {"message": "Belgenin kendi şablonu uygulanamadı ($HATA$); standart şablonla gösteriliyor.", "placeholders": {"hata": {"content": "$1"}}}
+  "notBelgeSablonuHatali": {"message": "Belgenin kendi şablonu uygulanamadı ($HATA$); standart şablonla gösteriliyor.", "placeholders": {"hata": {"content": "$1"}}},
+
+  "izinAciklama": {"message": "Firefox, adresi .xml ile biten web sayfalarındaki faturaları otomatik açabilmem için izin istiyor. İzin yalnızca bu sayfalarda faturayı tanımak için kullanılır; uzantı ağa istek atmaz."},
+  "izinVer": {"message": "İzin ver"},
+  "firefoxYerelNot": {"message": "Firefox, bilgisayarınızdaki dosyalarda (file://) uzantıların çalışmasına izin vermiyor. Bilgisayarınızdaki XML'leri bu sayfaya sürükleyin ya da \"Dosya seç\" ile açın."}
 }

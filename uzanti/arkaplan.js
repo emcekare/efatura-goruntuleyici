@@ -6,11 +6,16 @@
  */
 
 import { api, belgeKaydet, goruntuleyiciAdresi, adresAdi, sekmeyiGoruntule } from "./lib/aktarim.js";
+import { izinGerekiyorMu } from "./lib/izin.js";
 
 const MENU_SEKME = "sekmeyi-goruntule";
 const MENU_DOSYA = "dosya-ac";
 
-api.runtime.onInstalled.addListener(async () => {
+api.runtime.onInstalled.addListener(async ({ reason }) => {
+  // Firefox site erişimini kullanıcıya bırakıyor: ilk kurulumda izin kartını göster
+  if (reason === "install" && (await izinGerekiyorMu())) {
+    api.tabs.create({ url: goruntuleyiciAdresi() }).catch((e) => console.error("Açılış sayfası açılamadı:", e));
+  }
   try {
     await api.contextMenus.removeAll();
     api.contextMenus.create({ id: MENU_SEKME, title: api.i18n.getMessage("menuSekmeyiAc"), contexts: ["page"] });

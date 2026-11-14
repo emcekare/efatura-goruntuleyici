@@ -39,5 +39,9 @@
   "aracBelgeSablonu": {"message": "Invoice's own template"},
   "sablonStandart": {"message": "standard"},
   "notStandartSablon": {"message": "This document has no view template; showing it with the extension's standard template."},
-  "notBelgeSablonuHatali": {"message": "Could not apply the document's own template ($HATA$); showing the standard template.", "placeholders": {"hata": {"content": "$1"}}}
+  "notBelgeSablonuHatali": {"message": "Could not apply the document's own template ($HATA$); showing the standard template.", "placeholders": {"hata": {"content": "$1"}}},
+
+  "izinAciklama": {"message": "Firefox needs your permission so invoices on web pages ending in .xml can be opened automatically. It is only used to detect invoices on those pages; the extension makes no network requests."},
+  "izinVer": {"message": "Grant permission"},
+  "firefoxYerelNot": {"message": "Firefox does not let extensions run on local files (file://). Drag XML files from your computer onto this page or use \"Choose file\"."}
 }

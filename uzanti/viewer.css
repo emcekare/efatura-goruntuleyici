@@ -52,6 +52,7 @@ main { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 .birakma-alani h1 { font: 600 24px/1.25 var(--baslik-yazi); margin: 12px 0 8px; }
 .birakma-alani p { color: var(--soluk); margin: 0 0 20px; }
 .birakma-alani .ag-notu { font-size: 12px; margin: 20px 0 0; }
+.birakma-alani .firefox-notu { font-size: 12px; margin: 16px 0 0; color: var(--uyari); }
 .dosya-sec input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 
 .surukle-ortusu {

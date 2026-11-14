@@ -12,6 +12,7 @@ import { okunurXml } from "./lib/ham-xml.js";
 import { standartSablonAl, STANDART_TURLER } from "./lib/standart-sablon.js";
 import { api, belgeAl, belgeKaydet, goruntuleyiciAdresi } from "./lib/aktarim.js";
 import { m, sayfayiCevir } from "./lib/dil.js";
+import { izinKartiniKur, firefoxNotunuGoster } from "./lib/izin.js";
 
 const $ = (id) => document.getElementById(id);
 const el = {
@@ -64,6 +65,8 @@ async function baslat() {
 }
 
 function acilisGoster() {
+  izinKartiniKur($("izinKarti"), $("izinDugmesi")).catch((e) => console.error(e));
+  firefoxNotunuGoster($("firefoxNotu"));
   el.yukleniyor.hidden = true;
   el.acilis.hidden = false;
   el.aracCubugu.hidden = true;
