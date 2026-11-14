@@ -13,7 +13,7 @@ import { standartSablonAl, STANDART_TURLER } from "./lib/standart-sablon.js";
 import { karekoduYerlestir } from "./lib/karekod.js";
 import { api, belgeAl, belgeKaydet, goruntuleyiciAdresi } from "./lib/aktarim.js";
 import { m, sayfayiCevir } from "./lib/dil.js";
-import { izinKartiniKur, firefoxNotunuGoster } from "./lib/izin.js";
+import { izinKartiniKur, firefoxNotunuGoster, firefoxMu } from "./lib/izin.js";
 
 const $ = (id) => document.getElementById(id);
 const el = {
@@ -40,8 +40,15 @@ const el = {
  */
 const durum = { htmlBelge: null, htmlStandart: null, hamMetin: "", sablonAdi: null, gorunum: "ham", sonFatura: "belge" };
 
-/** Test için `viewer.html?polyfill=1`: yerleşik XSLT olsa bile polyfill'i kullan. */
-const polyfillZorla = new URLSearchParams(location.search).get("polyfill") === "1";
+/**
+ * Chrome'da yerleşik XSLT yerine her zaman paketle gelen polyfill kullanılır: Chrome
+ * XSLT'yi kaldırıyor ve yerleşiği kullanınca uzantının hata listesine "kullanımdan
+ * kaldırıldı" uyarısı düşüyor. Firefox'ta yerleşik XSLT (Firefox paketinde polyfill yok).
+ * Test için `?polyfill=1` polyfill'i, `?yerel=1` yerleşiği zorlar.
+ */
+const adresParametreleri = new URLSearchParams(location.search);
+const polyfillKullan =
+  adresParametreleri.get("polyfill") === "1" || (!firefoxMu() && adresParametreleri.get("yerel") !== "1");
 
 sayfayiCevir();
 baslat().catch((e) => {
@@ -121,7 +128,7 @@ async function belgeGoster(ad, xml) {
     neden = m("notXmlBozuk");
   } else if (!cozum.sablon && !standartUygun) {
     neden = cozum.tur ? m("notSablonYok") : m("notUblDegil");
-  } else if (!(await xsltHazirla(polyfillZorla))) {
+  } else if (!(await xsltHazirla(polyfillKullan))) {
     neden = m("notXsltYok");
   } else {
     // Önce belgenin kendi şablonu; yoksa ya da bozuksa uzantının standart şablonu

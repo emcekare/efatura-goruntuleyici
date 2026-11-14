@@ -124,6 +124,14 @@ try {
     }
   });
 
+  // Chrome'un "XSLTProcessor kullanımdan kaldırıldı" uyarısı uzantının hata listesine düşmemeli
+  const xsltUyarilari = [];
+  // (Yalnızca uzantı sayfaları; Chrome'un kendi XML ağacı görüntüleyicisi de bu uyarıyı basıyor.)
+  baglam.on("console", (mesaj) => {
+    const kaynak = mesaj.page()?.url() ?? "";
+    if (kaynak.startsWith("chrome-extension://") && /XSLTProcessor/i.test(mesaj.text())) xsltUyarilari.push(mesaj.text().slice(0, 80));
+  });
+
   /** Bir .xml adresini açar, görüntüleyiciye yönlenmesini bekler. */
   async function xmlAc(ad) {
     await sayfa.goto(`${SITE}/${ad}`);
@@ -333,6 +341,20 @@ try {
 
   // Meta refresh 5 sn sonra tetiklenirdi; bekle ve hiçbir isteğin sunucuya ulaşmadığını doğrula
   await sayfa.waitForTimeout(5500);
+  await dene("yerleşik XSLT ile de çalışır (?yerel=1)", async () => {
+    const adres = await xmlAc("efatura-ornek.xml");
+    const once = xsltUyarilari.length;
+    await sayfa.goto(adres.replace("viewer.html#", "viewer.html?yerel=1#"));
+    await sayfa.waitForSelector("#yukleniyor", { state: "hidden", timeout: 30000 });
+    icerir(await cerceveMetni("12.500,00"), "12.500,00 TRY", "yerleşik dönüşüm");
+    console.log(`    (yerleşik XSLT kullanımında yakalanan uyarı: ${xsltUyarilari.length - once}; dinleyicinin çalıştığını gösterir)`);
+    xsltUyarilari.splice(once); // bu testin kasıtlı uyarısı sayılmaz
+  });
+
+  await dene("Chrome'da XSLT kullanımdan kaldırma uyarısı düşmez", async () => {
+    if (xsltUyarilari.length) throw new Error(`uyarılar: ${xsltUyarilari.join(" | ")}`);
+  });
+
   await dene("uzantı ağa istek atmadı (izleme sunucusu + istek dinleyici)", async () => {
     if (sizintilar.length) throw new Error(`sunucuya ulaşan istekler: ${sizintilar.join(", ")}`);
     if (disIstekler.size) throw new Error(`tarayıcıdan giden istekler: ${[...disIstekler.values()].join(", ")}`);

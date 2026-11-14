@@ -33,7 +33,7 @@ Standart şablon bu proje için sıfırdan yazılmıştır (MIT); GİB'in şablo
 
 ### Dönüşüm
 
-Firefox'un yerleşik `XSLTProcessor`'ı kullanılır. Chrome'da yerleşik destek varsa o, yoksa uzantıyla birlikte gelen [xslt-polyfill](https://github.com/mfreed7/xslt_polyfill) (Chrome ekibinden Mason Freed, libxslt'nin WebAssembly derlemesi) kullanılır. Polyfill uzantının içindedir; internetten indirilmez.
+Firefox'un yerleşik `XSLTProcessor`'ı kullanılır. Chrome'da her zaman uzantıyla birlikte gelen [xslt-polyfill](https://github.com/mfreed7/xslt_polyfill) (Chrome ekibinden Mason Freed, libxslt'nin WebAssembly derlemesi) kullanılır. Polyfill uzantının içindedir; internetten indirilmez.
 
 ## Güvenlik
 

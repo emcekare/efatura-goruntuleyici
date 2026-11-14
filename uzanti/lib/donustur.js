@@ -12,12 +12,16 @@ let polyfillSozu = null;
 
 /**
  * XSLTProcessor'ı hazır eder.
- * @param {boolean} [polyfillZorla] test için: yerleşik destek olsa bile polyfill'i kullan
+ * @param {boolean} [polyfillZorla] yerleşik destek olsa bile polyfill'i kullan (Chrome'da varsayılan)
  * @returns {Promise<boolean>} dönüşüm yapılabilir mi
  */
 export async function xsltHazirla(polyfillZorla = false) {
   if (typeof XSLTProcessor !== "undefined" && !polyfillZorla) return true;
+  const yerel = window.XSLTProcessor;
   polyfillSozu ??= new Promise((coz, reddet) => {
+    // Polyfill yerleşik desteği `new XSLTProcessor()` ile yokluyor; Chrome bunu da
+    // "kullanımdan kaldırıldı" uyarısı olarak kaydediyor. Yerleşiği önce gizle.
+    if (polyfillZorla && yerel) delete window.XSLTProcessor;
     window.xsltUsePolyfillOnlyIfNeeded = !polyfillZorla;
     window.xsltDontAutoloadXmlDocs = true;
     window.xsltPolyfillQuiet = true;
@@ -31,13 +35,15 @@ export async function xsltHazirla(polyfillZorla = false) {
     .then(() => window.xsltPolyfillReady?.())
     .catch((e) => {
       polyfillSozu = null; // sonraki denemede yeniden dene
+      if (yerel && typeof window.XSLTProcessor === "undefined") window.XSLTProcessor = yerel;
       throw e;
     });
   try {
     await polyfillSozu;
   } catch (e) {
+    // Polyfill yüklenemezse yerleşik XSLT varsa onunla devam et
     console.error("XSLT polyfill hatası:", e);
-    return false;
+    return typeof XSLTProcessor !== "undefined";
   }
   return typeof XSLTProcessor !== "undefined";
 }
