@@ -98,42 +98,110 @@ export function karekodGorseli(icerik) {
   };
 }
 
-/** Karekodun çizileceği öğe: `#qrcode` ya da kimliği "qrcode" benzeri boş bir öğe. */
+/** Karekod yer tutucusu kimliği: `qrcode`, `qr-code`, `QRCode123` (ör. DFE şablonları kimliğe fatura no ekliyor). */
+const YER_TUTUCU = /^qr[-_]?code/i;
+
+/**
+ * Karekodun çizileceği öğe: `#qrcode` ya da kimliği "qrcode" ile başlayan, içinde
+ * görsel olmayan bir öğe ("qrcode_container" gibi kaplar hariç).
+ */
 function hedefBul(belge) {
-  const aday =
-    belge.getElementById("qrcode") ??
-    Array.from(belge.querySelectorAll("[id]")).find((el) => /^qr[-_]?code$/i.test(el.id));
-  if (!aday) return null;
+  const adaylar = [
+    belge.getElementById("qrcode"),
+    ...Array.from(belge.querySelectorAll("[id]")).filter((el) => YER_TUTUCU.test(el.id) && !/container|wrapper|kutu/i.test(el.id)),
+  ].filter(Boolean);
   // Şablon karekodu zaten görsel olarak koymuşsa dokunma
-  if (aday.querySelector("img, svg, canvas, table")) return null;
-  return aday;
+  return adaylar.find((el) => !el.querySelector("img, svg, canvas, table")) ?? null;
+}
+
+/** Yer tutucuyla eşleşen gizli karekod metni (`qrvalue`, `qrvalue123`). */
+function sablonMetni(belge, hedef) {
+  const sonek = hedef.id.replace(YER_TUTUCU, "");
+  const el =
+    belge.getElementById(`qrvalue${sonek}`) ??
+    Array.from(belge.querySelectorAll("[id]")).find((x) => /^qr[-_]?value/i.test(x.id));
+  return metin(el);
+}
+
+/** Karekod görseli öğesi. */
+function gorselOlustur(htmlBelge, icerik) {
+  const gorsel = htmlBelge.createElement("img");
+  const { url, boyut } = karekodGorseli(icerik);
+  gorsel.src = url;
+  gorsel.alt = "Karekod";
+  gorsel.width = boyut;
+  gorsel.height = boyut;
+  gorsel.style.display = "block";
+  gorsel.style.imageRendering = "pixelated";
+  return gorsel;
 }
 
 /**
- * Şablon çıktısındaki karekod yer tutucusuna karekodu yerleştirir.
+ * Karekodu bir sunucudan isteyen görselleri (ör. Sovos şablonları:
+ * `<img src="https://qr.sovostr.com/qr?data={...}">`) yerelde çizilen karekodla
+ * değiştirir. Uzantı ağa istek atmadığı için bu görseller aksi halde boş kalır.
+ * Metin adresteki JSON parametresinden, yoksa faturadan alınır.
+ * @returns {number} değiştirilen görsel sayısı
+ */
+function uzakKarekodlariDegistir(htmlBelge, xmlBelge) {
+  let sayi = 0;
+  for (const img of Array.from(htmlBelge.querySelectorAll("img[src]"))) {
+    const src = img.getAttribute("src").trim();
+    if (!/^(https?:)?\/\//i.test(src)) continue;
+    const ipucu = `${src} ${img.getAttribute("alt") ?? ""} ${img.id} ${img.className}`;
+    if (!/qr|karekod/i.test(ipucu)) continue;
+    let icerik = null;
+    try {
+      for (const deger of new URL(src, "https://yerel.invalid/").searchParams.values()) {
+        if (/^\s*\{/.test(deger)) {
+          icerik = deger;
+          break;
+        }
+      }
+    } catch {
+      // Geçersiz adres: metni faturadan üret
+    }
+    icerik ??= karekodMetni(xmlBelge);
+    if (!icerik) continue;
+    try {
+      const yeni = gorselOlustur(htmlBelge, icerik);
+      // Şablonun verdiği boyut korunur (ör. width="175px")
+      const genislik = parseInt(img.getAttribute("width") ?? "", 10);
+      if (genislik > 0) {
+        yeni.width = genislik;
+        yeni.height = genislik;
+      }
+      for (const oz of ["align", "class", "style"]) if (img.hasAttribute(oz)) yeni.setAttribute(oz, img.getAttribute(oz));
+      yeni.style.imageRendering = "pixelated";
+      img.replaceWith(yeni);
+      sayi++;
+    } catch (e) {
+      console.info("Karekod üretilemedi:", e);
+    }
+  }
+  return sayi;
+}
+
+/**
+ * Şablon çıktısına karekodu koyar: sunucudan istenen karekod görsellerini yerelde
+ * çizilenle değiştirir; GİB tarzı `#qrcode` yer tutucusu varsa oraya çizer.
  * @param {Document} htmlBelge şablon çıktısı (DOMParser ile ayrıştırılmış)
  * @param {Document} xmlBelge fatura
  * @returns {boolean} karekod yerleştirildi mi
  */
 export function karekoduYerlestir(htmlBelge, xmlBelge) {
+  if (uzakKarekodlariDegistir(htmlBelge, xmlBelge) > 0) return true;
   const hedef = hedefBul(htmlBelge);
   if (!hedef) return false;
-  const icerik = metin(htmlBelge.getElementById("qrvalue")) || karekodMetni(xmlBelge);
+  const icerik = sablonMetni(htmlBelge, hedef) || karekodMetni(xmlBelge);
   if (!icerik) return false;
   try {
-    const gorsel = htmlBelge.createElement("img");
-    const { url, boyut } = karekodGorseli(icerik);
-    gorsel.src = url;
-    gorsel.alt = "Karekod";
-    gorsel.width = boyut;
-    gorsel.height = boyut;
-    gorsel.style.display = "block";
-    gorsel.style.imageRendering = "pixelated";
-    hedef.replaceChildren(gorsel);
+    // Yer tutucudaki betik/gizli metin dursun (gizli); karekod en başa
+    hedef.prepend(gorselOlustur(htmlBelge, icerik));
     return true;
   } catch (e) {
     // Çok uzun metin vb.: karekodsuz göster
-    console.warn("Karekod üretilemedi:", e);
+    console.info("Karekod üretilemedi:", e);
     return false;
   }
 }

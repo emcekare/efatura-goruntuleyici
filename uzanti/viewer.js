@@ -136,7 +136,7 @@ async function belgeGoster(ad, xml) {
       try {
         durum.htmlBelge = gosterimIcinHazirla(xsltUygula(cozum.belge, cozum.sablon.xslt), { ortala: true, duzenle: karekodEkle });
       } catch (e) {
-        console.error("Belgenin şablonu uygulanamadı:", e);
+        console.info("Belgenin şablonu uygulanamadı:", e);
         neden = standartUygun ? m("notBelgeSablonuHatali", e?.message ?? String(e)) : m("notDonusumHatasi", e?.message ?? String(e));
       }
     } else {

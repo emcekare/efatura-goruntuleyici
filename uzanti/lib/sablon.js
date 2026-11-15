@@ -101,7 +101,7 @@ export function belgedenXsltBul(belge) {
     try {
       baytlar = base64Bayt(b64);
     } catch (e) {
-      console.warn(`Ek çözülemedi (${dosyaAdi || "adsız"}), atlandı:`, e);
+      console.debug(`Ek çözülemedi (${dosyaAdi || "adsız"}), atlandı:`, e);
       continue;
     }
     if (pdfMi(dosyaAdi, mime, baytlar)) continue;

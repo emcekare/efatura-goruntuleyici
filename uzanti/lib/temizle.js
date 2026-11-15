@@ -24,6 +24,39 @@ const YAZDIRMADA_KALDIRILACAK = [
 
 const URL_OZNITELIKLERI = ["href", "src", "action", "formaction", "xlink:href", "data", "background", "poster", "srcset"];
 
+/**
+ * Gömülü olmayan (data:/blob: dışı) bir adres mi? http(s) adresleri ağa, göreli
+ * adresler uzantının kendi dosyalarına gider; ikisi de faturada işe yaramaz.
+ */
+const DIS_ADRES = /^(?!\s*(data|blob):)\s*\S/i;
+const CSS_DIS_URL = /url\(\s*(?!['"]?\s*(data|blob):)[^)]*\)/gi;
+
+/**
+ * Gömülü olmayan kaynakları (görsel, stil dosyası, CSS url()) baştan söker. CSP onları zaten
+ * engelliyor, ama her engelleme Chrome'da uzantının hata listesine kayıt düşürüyor.
+ * Görselin adresi ipucu olarak kalır.
+ */
+function disKaynaklariSok(belge) {
+  for (const img of Array.from(belge.querySelectorAll("img[src], img[srcset], input[type=image][src]"))) {
+    const src = img.getAttribute("src") ?? "";
+    if (DIS_ADRES.test(src)) {
+      img.removeAttribute("src");
+      if (!img.title) img.title = src;
+    }
+    if (DIS_ADRES.test(img.getAttribute("srcset") ?? "")) img.removeAttribute("srcset");
+  }
+  for (const el of Array.from(belge.querySelectorAll("link[href]"))) if (DIS_ADRES.test(el.getAttribute("href"))) el.remove();
+  for (const el of Array.from(belge.querySelectorAll("[background]"))) if (DIS_ADRES.test(el.getAttribute("background"))) el.removeAttribute("background");
+  for (const el of Array.from(belge.querySelectorAll("[style]"))) {
+    const stil = el.getAttribute("style");
+    if (CSS_DIS_URL.test(stil)) el.setAttribute("style", stil.replace(CSS_DIS_URL, "none"));
+    CSS_DIS_URL.lastIndex = 0;
+  }
+  for (const el of Array.from(belge.getElementsByTagName("style"))) {
+    el.textContent = el.textContent.replace(CSS_DIS_URL, "none").replace(/@import[^;]*;/gi, "");
+  }
+}
+
 /** Değer tehlikeli bir URL mi (javascript:, vbscript:, data:text/html)? */
 function tehlikeliUrlMi(deger) {
   // Kontrol karakterleri ve boşluklar atlatma için kullanılabiliyor
@@ -72,6 +105,11 @@ export function gosterimIcinHazirla(html, { ortala = false, duzenle } = {}) {
   // Betikler sandbox'ta zaten çalışmıyor; Chrome her biri için konsola (ve uzantının
   // hata listesine) "Blocked script execution" yazmasın diye çıkarılır.
   for (const betik of Array.from(belge.getElementsByTagName("script"))) betik.remove();
+  // Olay öznitelikleri (onload vb.) için de aynı kayıt düşüyor
+  for (const el of Array.from(belge.getElementsByTagName("*"))) {
+    for (const oz of Array.from(el.attributes)) if (oz.name.toLowerCase().startsWith("on")) el.removeAttribute(oz.name);
+  }
+  disKaynaklariSok(belge);
   if (ortala) {
     const stil = belge.createElement("style");
     stil.textContent = ORTALAMA_STILI;

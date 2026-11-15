@@ -19,7 +19,14 @@ const b64 = (metin, kodlama = "utf8") =>
 
 // ---------------------------------------------------------------- Şablonlar
 
-function faturaSablonu({ baslik = "e-FATURA", ekBas = "", ekGovde = "" } = {}) {
+/** GİB şablonlarındaki karekod bloğu: metin gizli #qrvalue'da, betik #qrcode'a çizer. */
+const GIB_KAREKOD = `        <div id="qrcode_container" style="float: right; margin: -8px 0 6px 12px;">
+          <div id="qrcode"></div>
+          <div id="qrvalue" style="display:none">{"vkntckn":"<xsl:value-of select="cac:AccountingSupplierParty/cac:Party/cac:PartyIdentification/cbc:ID"/>","no":"<xsl:value-of select="cbc:ID"/>","ettn":"<xsl:value-of select="cbc:UUID"/>","odenecek":"<xsl:value-of select="cac:LegalMonetaryTotal/cbc:PayableAmount"/>"}</div>
+          <script type="text/javascript">new QRCode(document.getElementById("qrcode"), { width: 140, height: 140 }).makeCode(document.getElementById("qrvalue").innerHTML);</script>
+        </div>`;
+
+function faturaSablonu({ baslik = "e-FATURA", ekBas = "", ekGovde = "", karekod = null } = {}) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -83,12 +90,7 @@ function faturaSablonu({ baslik = "e-FATURA", ekBas = "", ekGovde = "" } = {}) {
           </div>
         </div>
 
-        <!-- GİB şablonlarındaki gibi: karekod metni gizli #qrvalue'da, betik #qrcode'a çizer -->
-        <div id="qrcode_container" style="float: right; margin: -8px 0 6px 12px;">
-          <div id="qrcode"></div>
-          <div id="qrvalue" style="display:none">{"vkntckn":"<xsl:value-of select="cac:AccountingSupplierParty/cac:Party/cac:PartyIdentification/cbc:ID"/>","no":"<xsl:value-of select="cbc:ID"/>","ettn":"<xsl:value-of select="cbc:UUID"/>","odenecek":"<xsl:value-of select="cac:LegalMonetaryTotal/cbc:PayableAmount"/>"}</div>
-          <script type="text/javascript">new QRCode(document.getElementById("qrcode"), { width: 140, height: 140 }).makeCode(document.getElementById("qrvalue").innerHTML);</script>
-        </div>
+        ${karekod ?? GIB_KAREKOD}
         <h1>${baslik}</h1>
 
         <table class="bilgi">
@@ -342,6 +344,46 @@ const dosyalar = {
           <a id="jsbag" href="javascript:document.title='JS-BAGLANTI'">javascript: bağlantısı</a>
           <img id="izleme" src="${IZLEME_ADRESI}/izleme.png" alt="dış görsel (yüklenmemeli)" width="1" height="1"/>
           <img src="x" onerror="document.title='ONERROR-CALISTI'" alt=""/>
+        </div>`,
+        }),
+      ),
+    }),
+  }),
+
+  // Karekodu bir sunucudan isteyen şablon (Sovos tarzı); uzantı yerelde çizmeli, istek gitmemeli
+  "karekod-uzak-sunucu.xml": fatura({
+    no: "KRK2026000000001",
+    uuid: "9c8b7a6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+    notlar: ["Şablon karekodu dış sunucudan istiyor; görüntüleyici adresteki metinle yerelde çizmeli."],
+    ekler: ek({
+      dosyaAdi: "uzak-karekod.xslt",
+      icerik: b64(
+        faturaSablonu({
+          baslik: "UZAK KAREKOD",
+          karekod: `<img alt="qrcode" width="175px" align="right" style="float:right">
+          <xsl:attribute name="src">${IZLEME_ADRESI}/qr?data={"no":"<xsl:value-of select="cbc:ID"/>","ettn":"<xsl:value-of select="cbc:UUID"/>","odenecek":"<xsl:value-of select="cac:LegalMonetaryTotal/cbc:PayableAmount"/>"}</xsl:attribute>
+        </img>
+        <img src="${IZLEME_ADRESI}/logo.png" alt="firma logosu" width="80"/>
+        <div style="background:url(${IZLEME_ADRESI}/zemin.png)">dış zemin görseli</div>`,
+        }),
+      ),
+    }),
+  }),
+
+  // Kimliğe fatura no eklenen yer tutucu (DFE tarzı: qrcode{no}, qrvalue{no}) ve olay öznitelikleri
+  "karekod-sonekli.xml": fatura({
+    no: "KRK2026000000002",
+    uuid: "0d1e2f3a-4b5c-4d6e-8f70-8192a3b4c5d6",
+    notlar: ["Karekod yer tutucusunun kimliği fatura numarasıyla bitiyor."],
+    ekler: ek({
+      dosyaAdi: "sonekli-karekod.xslt",
+      icerik: b64(
+        faturaSablonu({
+          baslik: "SONEKLİ KAREKOD",
+          ekGovde: `<img src="x" onerror="this.alt='olay'" onload="this.alt='olay'" alt="" width="1" height="1"/>`,
+          karekod: `<div style="float:right" id="qrcode{cbc:ID}">
+          <div id="qrvalue{cbc:ID}" style="display:none">{"no":"<xsl:value-of select="cbc:ID"/>","sonek":"evet"}</div>
+          <script type="text/javascript">new QRCode(document.getElementById("qrcode<xsl:value-of select="cbc:ID"/>"), {}).makeCode("x");</script>
         </div>`,
         }),
       ),

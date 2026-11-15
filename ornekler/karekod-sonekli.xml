@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+  xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+  xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+  xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+  <ext:UBLExtensions><ext:UBLExtension><ext:ExtensionContent/></ext:UBLExtension></ext:UBLExtensions>
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>TR1.2</cbc:CustomizationID>
+  <cbc:ProfileID>TEMELFATURA</cbc:ProfileID>
+  <cbc:ID>KRK2026000000002</cbc:ID>
+  <cbc:CopyIndicator>false</cbc:CopyIndicator>
+  <cbc:UUID>0d1e2f3a-4b5c-4d6e-8f70-8192a3b4c5d6</cbc:UUID>
+  <cbc:IssueDate>2026-11-02</cbc:IssueDate>
+  <cbc:InvoiceTypeCode>SATIS</cbc:InvoiceTypeCode>
+  <cbc:Note>Karekod yer tutucusunun kimliği fatura numarasıyla bitiyor.</cbc:Note>
+  <cbc:DocumentCurrencyCode>TRY</cbc:DocumentCurrencyCode>
+  <cbc:LineCountNumeric>3</cbc:LineCountNumeric>
+  <cac:AdditionalDocumentReference>
+    <cbc:ID>ORNEK</cbc:ID>
+    <cbc:IssueDate>2026-11-02</cbc:IssueDate>
+    <cac:Attachment>
+      <cbc:EmbeddedDocumentBinaryObject characterSetCode="UTF-8" encodingCode="Base64" filename="sonekli-karekod.xslt" mimeCode="application/xml">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHhzbDpzdHlsZXNoZWV0IHZl
+cnNpb249IjIuMCIKICB4bWxuczp4c2w9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvWFNML1RyYW5z
+Zm9ybSIKICB4bWxuczppbnY9InVybjpvYXNpczpuYW1lczpzcGVjaWZpY2F0aW9uOnVibDpzY2hl
+bWE6eHNkOkludm9pY2UtMiIKICB4bWxuczpjYWM9InVybjpvYXNpczpuYW1lczpzcGVjaWZpY2F0
+aW9uOnVibDpzY2hlbWE6eHNkOkNvbW1vbkFnZ3JlZ2F0ZUNvbXBvbmVudHMtMiIKICB4bWxuczpj
+YmM9InVybjpvYXNpczpuYW1lczpzcGVjaWZpY2F0aW9uOnVibDpzY2hlbWE6eHNkOkNvbW1vbkJh
+c2ljQ29tcG9uZW50cy0yIgogIGV4Y2x1ZGUtcmVzdWx0LXByZWZpeGVzPSJpbnYgY2FjIGNiYyI+
+CiAgPHhzbDpvdXRwdXQgbWV0aG9kPSJodG1sIiBlbmNvZGluZz0iVVRGLTgiIGluZGVudD0ieWVz
+Ii8+CiAgPHhzbDpkZWNpbWFsLWZvcm1hdCBuYW1lPSJ0ciIgZGVjaW1hbC1zZXBhcmF0b3I9Iiwi
+IGdyb3VwaW5nLXNlcGFyYXRvcj0iLiIvPgoKICA8eHNsOnRlbXBsYXRlIG5hbWU9InR1dGFyIj4K
+ICAgIDx4c2w6cGFyYW0gbmFtZT0iZCIvPgogICAgPHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImZvcm1h
+dC1udW1iZXIoJGQsICcjIyMuIyMwLDAwJywgJ3RyJykiLz4KICAgIDx4c2w6dGV4dD4gPC94c2w6
+dGV4dD4KICAgIDx4c2w6dmFsdWUtb2Ygc2VsZWN0PSIkZC9AY3VycmVuY3lJRCIvPgogIDwveHNs
+OnRlbXBsYXRlPgoKICA8eHNsOnRlbXBsYXRlIG1hdGNoPSIvaW52Okludm9pY2UiPgogICAgPGh0
+bWw+CiAgICAgIDxoZWFkPgogICAgICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ii8+CiAgICAgICAg
+PHRpdGxlPjx4c2w6dmFsdWUtb2Ygc2VsZWN0PSJjYmM6SUQiLz48L3RpdGxlPgogICAgICAgIDxz
+dHlsZT4KICAgICAgICAgIGJvZHkgeyBmb250LWZhbWlseTogVGFob21hLCBWZXJkYW5hLCBzYW5z
+LXNlcmlmOyBmb250LXNpemU6IDEycHg7IGNvbG9yOiAjMTExOyBtYXJnaW46IDI0cHggYXV0bzsg
+bWF4LXdpZHRoOiA4MjBweDsgfQogICAgICAgICAgLnVzdCB7IGRpc3BsYXk6IGZsZXg7IGp1c3Rp
+ZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7IGdhcDog
+MjRweDsgfQogICAgICAgICAgLnRhcmFmIHsgYm9yZGVyOiAxcHggc29saWQgIzk5OTsgcGFkZGlu
+ZzogOHB4IDEwcHg7IHdpZHRoOiA0NiU7IGxpbmUtaGVpZ2h0OiAxLjU7IH0KICAgICAgICAgIC50
+YXJhZiBiIHsgZm9udC1zaXplOiAxM3B4OyB9CiAgICAgICAgICBoMSB7IHRleHQtYWxpZ246IGNl
+bnRlcjsgZm9udC1zaXplOiAyMnB4OyBsZXR0ZXItc3BhY2luZzogMnB4OyBtYXJnaW46IDE4cHgg
+MDsgfQogICAgICAgICAgdGFibGUgeyBib3JkZXItY29sbGFwc2U6IGNvbGxhcHNlOyB3aWR0aDog
+MTAwJTsgfQogICAgICAgICAgLmJpbGdpIHRkIHsgYm9yZGVyOiAxcHggc29saWQgIzk5OTsgcGFk
+ZGluZzogM3B4IDhweDsgfQogICAgICAgICAgLmJpbGdpIHRkOmZpcnN0LWNoaWxkIHsgZm9udC13
+ZWlnaHQ6IGJvbGQ7IHdpZHRoOiAxNjBweDsgfQogICAgICAgICAgLmthbGVtbGVyIHsgbWFyZ2lu
+LXRvcDogMThweDsgfQogICAgICAgICAgLmthbGVtbGVyIHRoIHsgYmFja2dyb3VuZDogI2U4ZThl
+ODsgYm9yZGVyOiAxcHggc29saWQgIzc3NzsgcGFkZGluZzogNHB4OyB9CiAgICAgICAgICAua2Fs
+ZW1sZXIgdGQgeyBib3JkZXI6IDFweCBzb2xpZCAjOTk5OyBwYWRkaW5nOiA0cHg7IH0KICAgICAg
+ICAgIC5zYXlpIHsgdGV4dC1hbGlnbjogcmlnaHQ7IHdoaXRlLXNwYWNlOiBub3dyYXA7IH0KICAg
+ICAgICAgIC50b3BsYW0geyB3aWR0aDogNTAlOyBtYXJnaW46IDE0cHggMCAwIGF1dG87IH0KICAg
+ICAgICAgIC50b3BsYW0gdGQgeyBib3JkZXI6IDFweCBzb2xpZCAjOTk5OyBwYWRkaW5nOiA0cHgg
+OHB4OyB9CiAgICAgICAgICAudG9wbGFtIHRyOmxhc3QtY2hpbGQgdGQgeyBmb250LXdlaWdodDog
+Ym9sZDsgYmFja2dyb3VuZDogI2YwZjBmMDsgfQogICAgICAgICAgLm5vdGxhciB7IG1hcmdpbi10
+b3A6IDE4cHg7IGJvcmRlci10b3A6IDFweCBkYXNoZWQgIzk5OTsgcGFkZGluZy10b3A6IDhweDsg
+fQogICAgICAgICAgQG1lZGlhIHByaW50IHsgYm9keSB7IG1hcmdpbjogMDsgfSB9CiAgICAgICAg
+PC9zdHlsZT4KICAgICAgICAKICAgICAgPC9oZWFkPgogICAgICA8Ym9keT4KICAgICAgICA8aW1n
+IHNyYz0ieCIgb25lcnJvcj0idGhpcy5hbHQ9J29sYXknIiBvbmxvYWQ9InRoaXMuYWx0PSdvbGF5
+JyIgYWx0PSIiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4KICAgICAgICA8ZGl2IGNsYXNzPSJ1c3Qi
+PgogICAgICAgICAgPGRpdiBjbGFzcz0idGFyYWYiPgogICAgICAgICAgICA8Yj48eHNsOnZhbHVl
+LW9mIHNlbGVjdD0iY2FjOkFjY291bnRpbmdTdXBwbGllclBhcnR5L2NhYzpQYXJ0eS9jYWM6UGFy
+dHlOYW1lL2NiYzpOYW1lIi8+PC9iPjxici8+CiAgICAgICAgICAgIDx4c2w6dmFsdWUtb2Ygc2Vs
+ZWN0PSJjYWM6QWNjb3VudGluZ1N1cHBsaWVyUGFydHkvY2FjOlBhcnR5L2NhYzpQb3N0YWxBZGRy
+ZXNzL2NiYzpTdHJlZXROYW1lIi8+PGJyLz4KICAgICAgICAgICAgPHhzbDp2YWx1ZS1vZiBzZWxl
+Y3Q9ImNhYzpBY2NvdW50aW5nU3VwcGxpZXJQYXJ0eS9jYWM6UGFydHkvY2FjOlBvc3RhbEFkZHJl
+c3MvY2JjOkNpdHlTdWJkaXZpc2lvbk5hbWUiLz4gLwogICAgICAgICAgICA8eHNsOnZhbHVlLW9m
+IHNlbGVjdD0iY2FjOkFjY291bnRpbmdTdXBwbGllclBhcnR5L2NhYzpQYXJ0eS9jYWM6UG9zdGFs
+QWRkcmVzcy9jYmM6Q2l0eU5hbWUiLz48YnIvPgogICAgICAgICAgICBWZXJnaSBEYWlyZXNpOiA8
+eHNsOnZhbHVlLW9mIHNlbGVjdD0iY2FjOkFjY291bnRpbmdTdXBwbGllclBhcnR5L2NhYzpQYXJ0
+eS9jYWM6UGFydHlUYXhTY2hlbWUvY2FjOlRheFNjaGVtZS9jYmM6TmFtZSIvPjxici8+CiAgICAg
+ICAgICAgIFZLTjogPHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNhYzpBY2NvdW50aW5nU3VwcGxpZXJQ
+YXJ0eS9jYWM6UGFydHkvY2FjOlBhcnR5SWRlbnRpZmljYXRpb24vY2JjOklEIi8+CiAgICAgICAg
+ICA8L2Rpdj4KICAgICAgICAgIDxkaXYgY2xhc3M9InRhcmFmIj4KICAgICAgICAgICAgPGI+U0FZ
+SU48L2I+PGJyLz4KICAgICAgICAgICAgPGI+PHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNhYzpBY2Nv
+dW50aW5nQ3VzdG9tZXJQYXJ0eS9jYWM6UGFydHkvY2FjOlBhcnR5TmFtZS9jYmM6TmFtZSIvPjwv
+Yj48YnIvPgogICAgICAgICAgICA8eHNsOnZhbHVlLW9mIHNlbGVjdD0iY2FjOkFjY291bnRpbmdD
+dXN0b21lclBhcnR5L2NhYzpQYXJ0eS9jYWM6UG9zdGFsQWRkcmVzcy9jYmM6U3RyZWV0TmFtZSIv
+Pjxici8+CiAgICAgICAgICAgIDx4c2w6dmFsdWUtb2Ygc2VsZWN0PSJjYWM6QWNjb3VudGluZ0N1
+c3RvbWVyUGFydHkvY2FjOlBhcnR5L2NhYzpQb3N0YWxBZGRyZXNzL2NiYzpDaXR5TmFtZSIvPjxi
+ci8+CiAgICAgICAgICAgIFZLTjogPHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNhYzpBY2NvdW50aW5n
+Q3VzdG9tZXJQYXJ0eS9jYWM6UGFydHkvY2FjOlBhcnR5SWRlbnRpZmljYXRpb24vY2JjOklEIi8+
+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPGRpdiBzdHlsZT0iZmxv
+YXQ6cmlnaHQiIGlkPSJxcmNvZGV7Y2JjOklEfSI+CiAgICAgICAgICA8ZGl2IGlkPSJxcnZhbHVl
+e2NiYzpJRH0iIHN0eWxlPSJkaXNwbGF5Om5vbmUiPnsibm8iOiI8eHNsOnZhbHVlLW9mIHNlbGVj
+dD0iY2JjOklEIi8+Iiwic29uZWsiOiJldmV0In08L2Rpdj4KICAgICAgICAgIDxzY3JpcHQgdHlw
+ZT0idGV4dC9qYXZhc2NyaXB0Ij5uZXcgUVJDb2RlKGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJx
+cmNvZGU8eHNsOnZhbHVlLW9mIHNlbGVjdD0iY2JjOklEIi8+IiksIHt9KS5tYWtlQ29kZSgieCIp
+Ozwvc2NyaXB0PgogICAgICAgIDwvZGl2PgogICAgICAgIDxoMT5TT05FS0zEsCBLQVJFS09EPC9o
+MT4KCiAgICAgICAgPHRhYmxlIGNsYXNzPSJiaWxnaSI+CiAgICAgICAgICA8dHI+PHRkPsOWemVs
+bGXFn3Rpcm1lIE5vPC90ZD48dGQ+PHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNiYzpDdXN0b21pemF0
+aW9uSUQiLz48L3RkPjwvdHI+CiAgICAgICAgICA8dHI+PHRkPlNlbmFyeW88L3RkPjx0ZD48eHNs
+OnZhbHVlLW9mIHNlbGVjdD0iY2JjOlByb2ZpbGVJRCIvPjwvdGQ+PC90cj4KICAgICAgICAgIDx0
+cj48dGQ+RmF0dXJhIFRpcGk8L3RkPjx0ZD48eHNsOnZhbHVlLW9mIHNlbGVjdD0iY2JjOkludm9p
+Y2VUeXBlQ29kZSIvPjwvdGQ+PC90cj4KICAgICAgICAgIDx0cj48dGQ+RmF0dXJhIE5vPC90ZD48
+dGQ+PHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNiYzpJRCIvPjwvdGQ+PC90cj4KICAgICAgICAgIDx0
+cj48dGQ+RmF0dXJhIFRhcmloaTwvdGQ+PHRkPgogICAgICAgICAgICA8eHNsOnZhbHVlLW9mIHNl
+bGVjdD0iY29uY2F0KHN1YnN0cmluZyhjYmM6SXNzdWVEYXRlLDksMiksICctJywgc3Vic3RyaW5n
+KGNiYzpJc3N1ZURhdGUsNiwyKSwgJy0nLCBzdWJzdHJpbmcoY2JjOklzc3VlRGF0ZSwxLDQpKSIv
+PgogICAgICAgICAgPC90ZD48L3RyPgogICAgICAgICAgPHRyPjx0ZD5FVFROPC90ZD48dGQ+PHhz
+bDp2YWx1ZS1vZiBzZWxlY3Q9ImNiYzpVVUlEIi8+PC90ZD48L3RyPgogICAgICAgIDwvdGFibGU+
+CgogICAgICAgIDx0YWJsZSBjbGFzcz0ia2FsZW1sZXIiPgogICAgICAgICAgPHRyPgogICAgICAg
+ICAgICA8dGg+U8SxcmE8L3RoPjx0aD5NYWwgLyBIaXptZXQ8L3RoPjx0aD5NaWt0YXI8L3RoPjx0
+aD5CaXJpbSBGaXlhdDwvdGg+CiAgICAgICAgICAgIDx0aD5LRFYgT3JhbsSxPC90aD48dGg+S0RW
+IFR1dGFyxLE8L3RoPjx0aD5NYWwgSGl6bWV0IFR1dGFyxLE8L3RoPgogICAgICAgICAgPC90cj4K
+ICAgICAgICAgIDx4c2w6Zm9yLWVhY2ggc2VsZWN0PSJjYWM6SW52b2ljZUxpbmUiPgogICAgICAg
+ICAgICA8dHI+CiAgICAgICAgICAgICAgPHRkIGNsYXNzPSJzYXlpIj48eHNsOnZhbHVlLW9mIHNl
+bGVjdD0iY2JjOklEIi8+PC90ZD4KICAgICAgICAgICAgICA8dGQ+PHhzbDp2YWx1ZS1vZiBzZWxl
+Y3Q9ImNhYzpJdGVtL2NiYzpOYW1lIi8+PC90ZD4KICAgICAgICAgICAgICA8dGQgY2xhc3M9InNh
+eWkiPgogICAgICAgICAgICAgICAgPHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImZvcm1hdC1udW1iZXIo
+Y2JjOkludm9pY2VkUXVhbnRpdHksICcjIyMuIyMwLCMjJywgJ3RyJykiLz4KICAgICAgICAgICAg
+ICAgIDx4c2w6dGV4dD4gPC94c2w6dGV4dD4KICAgICAgICAgICAgICAgIDx4c2w6Y2hvb3NlPgog
+ICAgICAgICAgICAgICAgICA8eHNsOndoZW4gdGVzdD0iY2JjOkludm9pY2VkUXVhbnRpdHkvQHVu
+aXRDb2RlID0gJ0M2MiciPkFkZXQ8L3hzbDp3aGVuPgogICAgICAgICAgICAgICAgICA8eHNsOndo
+ZW4gdGVzdD0iY2JjOkludm9pY2VkUXVhbnRpdHkvQHVuaXRDb2RlID0gJ0hVUiciPlNhYXQ8L3hz
+bDp3aGVuPgogICAgICAgICAgICAgICAgICA8eHNsOm90aGVyd2lzZT48eHNsOnZhbHVlLW9mIHNl
+bGVjdD0iY2JjOkludm9pY2VkUXVhbnRpdHkvQHVuaXRDb2RlIi8+PC94c2w6b3RoZXJ3aXNlPgog
+ICAgICAgICAgICAgICAgPC94c2w6Y2hvb3NlPgogICAgICAgICAgICAgIDwvdGQ+CiAgICAgICAg
+ICAgICAgPHRkIGNsYXNzPSJzYXlpIj48eHNsOmNhbGwtdGVtcGxhdGUgbmFtZT0idHV0YXIiPjx4
+c2w6d2l0aC1wYXJhbSBuYW1lPSJkIiBzZWxlY3Q9ImNhYzpQcmljZS9jYmM6UHJpY2VBbW91bnQi
+Lz48L3hzbDpjYWxsLXRlbXBsYXRlPjwvdGQ+CiAgICAgICAgICAgICAgPHRkIGNsYXNzPSJzYXlp
+Ij4lPHhzbDp2YWx1ZS1vZiBzZWxlY3Q9ImNhYzpUYXhUb3RhbC9jYWM6VGF4U3VidG90YWwvY2Jj
+OlBlcmNlbnQiLz48L3RkPgogICAgICAgICAgICAgIDx0ZCBjbGFzcz0ic2F5aSI+PHhzbDpjYWxs
+LXRlbXBsYXRlIG5hbWU9InR1dGFyIj48eHNsOndpdGgtcGFyYW0gbmFtZT0iZCIgc2VsZWN0PSJj
+YWM6VGF4VG90YWwvY2JjOlRheEFtb3VudCIvPjwveHNsOmNhbGwtdGVtcGxhdGU+PC90ZD4KICAg
+ICAgICAgICAgICA8dGQgY2xhc3M9InNheWkiPjx4c2w6Y2FsbC10ZW1wbGF0ZSBuYW1lPSJ0dXRh
+ciI+PHhzbDp3aXRoLXBhcmFtIG5hbWU9ImQiIHNlbGVjdD0iY2JjOkxpbmVFeHRlbnNpb25BbW91
+bnQiLz48L3hzbDpjYWxsLXRlbXBsYXRlPjwvdGQ+CiAgICAgICAgICAgIDwvdHI+CiAgICAgICAg
+ICA8L3hzbDpmb3ItZWFjaD4KICAgICAgICA8L3RhYmxlPgoKICAgICAgICA8dGFibGUgY2xhc3M9
+InRvcGxhbSI+CiAgICAgICAgICA8dHI+PHRkPk1hbCBIaXptZXQgVG9wbGFtIFR1dGFyxLE8L3Rk
+Pjx0ZCBjbGFzcz0ic2F5aSI+PHhzbDpjYWxsLXRlbXBsYXRlIG5hbWU9InR1dGFyIj48eHNsOndp
+dGgtcGFyYW0gbmFtZT0iZCIgc2VsZWN0PSJjYWM6TGVnYWxNb25ldGFyeVRvdGFsL2NiYzpMaW5l
+RXh0ZW5zaW9uQW1vdW50Ii8+PC94c2w6Y2FsbC10ZW1wbGF0ZT48L3RkPjwvdHI+CiAgICAgICAg
+ICA8eHNsOmZvci1lYWNoIHNlbGVjdD0iY2FjOlRheFRvdGFsL2NhYzpUYXhTdWJ0b3RhbCI+CiAg
+ICAgICAgICAgIDx0cj48dGQ+SGVzYXBsYW5hbiBLRFYgKCU8eHNsOnZhbHVlLW9mIHNlbGVjdD0i
+Y2JjOlBlcmNlbnQiLz4pPC90ZD48dGQgY2xhc3M9InNheWkiPjx4c2w6Y2FsbC10ZW1wbGF0ZSBu
+YW1lPSJ0dXRhciI+PHhzbDp3aXRoLXBhcmFtIG5hbWU9ImQiIHNlbGVjdD0iY2JjOlRheEFtb3Vu
+dCIvPjwveHNsOmNhbGwtdGVtcGxhdGU+PC90ZD48L3RyPgogICAgICAgICAgPC94c2w6Zm9yLWVh
+Y2g+CiAgICAgICAgICA8dHI+PHRkPlZlcmdpbGVyIERhaGlsIFRvcGxhbSBUdXRhcjwvdGQ+PHRk
+IGNsYXNzPSJzYXlpIj48eHNsOmNhbGwtdGVtcGxhdGUgbmFtZT0idHV0YXIiPjx4c2w6d2l0aC1w
+YXJhbSBuYW1lPSJkIiBzZWxlY3Q9ImNhYzpMZWdhbE1vbmV0YXJ5VG90YWwvY2JjOlRheEluY2x1
+c2l2ZUFtb3VudCIvPjwveHNsOmNhbGwtdGVtcGxhdGU+PC90ZD48L3RyPgogICAgICAgICAgPHRy
+Pjx0ZD7DlmRlbmVjZWsgVHV0YXI8L3RkPjx0ZCBjbGFzcz0ic2F5aSI+PHhzbDpjYWxsLXRlbXBs
+YXRlIG5hbWU9InR1dGFyIj48eHNsOndpdGgtcGFyYW0gbmFtZT0iZCIgc2VsZWN0PSJjYWM6TGVn
+YWxNb25ldGFyeVRvdGFsL2NiYzpQYXlhYmxlQW1vdW50Ii8+PC94c2w6Y2FsbC10ZW1wbGF0ZT48
+L3RkPjwvdHI+CiAgICAgICAgPC90YWJsZT4KCiAgICAgICAgPGRpdiBjbGFzcz0ibm90bGFyIj4K
+ICAgICAgICAgIDx4c2w6Zm9yLWVhY2ggc2VsZWN0PSJjYmM6Tm90ZSI+PHA+PHhzbDp2YWx1ZS1v
+ZiBzZWxlY3Q9Ii4iLz48L3A+PC94c2w6Zm9yLWVhY2g+CiAgICAgICAgPC9kaXY+CiAgICAgIDwv
+Ym9keT4KICAgIDwvaHRtbD4KICA8L3hzbDp0ZW1wbGF0ZT4KPC94c2w6c3R5bGVzaGVldD4K</cbc:EmbeddedDocumentBinaryObject>
+    </cac:Attachment>
+  </cac:AdditionalDocumentReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cac:PartyIdentification><cbc:ID schemeID="VKN">9990000001</cbc:ID></cac:PartyIdentification>
+      <cac:PartyName><cbc:Name>ÖRNEK YAZILIM VE DANIŞMANLIK TİCARET A.Ş.</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Çiçek Sokak No: 7/3</cbc:StreetName>
+        <cbc:CitySubdivisionName>Çankaya</cbc:CitySubdivisionName>
+        <cbc:CityName>ANKARA</cbc:CityName>
+        <cac:Country><cbc:Name>Türkiye</cbc:Name></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>Kavaklıdere</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyIdentification><cbc:ID schemeID="VKN">9990000002</cbc:ID></cac:PartyIdentification>
+      <cac:PartyName><cbc:Name>DENEME GIDA İTHALAT İHRACAT LTD. ŞTİ.</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Işıklar Caddesi No: 41</cbc:StreetName>
+        <cbc:CitySubdivisionName>Muratpaşa</cbc:CitySubdivisionName>
+        <cbc:CityName>ANTALYA</cbc:CityName>
+        <cac:Country><cbc:Name>Türkiye</cbc:Name></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>Antalya Kurumlar</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="TRY">6450.90</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="TRY">32254.50</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="TRY">6450.90</cbc:TaxAmount>
+      <cbc:Percent>20</cbc:Percent>
+      <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="TRY">32254.50</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="TRY">32254.50</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="TRY">38705.40</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="TRY">38705.40</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="TRY">12500.00</cbc:LineExtensionAmount>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="TRY">2500.00</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="TRY">12500.00</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="TRY">2500.00</cbc:TaxAmount>
+        <cbc:Percent>20</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:Item><cbc:Name>Çağrı merkezi yazılımı aylık kullanım bedeli (Kasım)</cbc:Name></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="TRY">12500.00</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID>2</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="HUR">6</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="TRY">11103.00</cbc:LineExtensionAmount>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="TRY">2220.60</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="TRY">11103.00</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="TRY">2220.60</cbc:TaxAmount>
+        <cbc:Percent>20</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:Item><cbc:Name>Kurulum ve eğitim hizmeti — İşletme personeli</cbc:Name></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="TRY">1850.50</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID>3</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">2</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="TRY">8651.50</cbc:LineExtensionAmount>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="TRY">1730.30</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="TRY">8651.50</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="TRY">1730.30</cbc:TaxAmount>
+        <cbc:Percent>20</cbc:Percent>
+        <cac:TaxCategory><cac:TaxScheme><cbc:Name>KDV</cbc:Name><cbc:TaxTypeCode>0015</cbc:TaxTypeCode></cac:TaxScheme></cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:Item><cbc:Name>Yedek güç kaynağı (UPS) 1500 VA</cbc:Name></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="TRY">4325.75</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

@@ -14,7 +14,7 @@ Firefox'ta bir e-Fatura XML'i açınca ham kod görünür, Chrome ise XSLT deste
 - Şablonu olmayan (ya da şablonu bozuk) e-Fatura, e-Arşiv ve e-İrsaliye'ler uzantının **standart şablonuyla** gösterilir. Yerleşim GİB'in örnek fatura görünümüne benzer: taraflar, fatura bilgileri, kalemler (iskonto, KDV, diğer vergiler, tevkifat), toplamlar, istisna sebebi, ödeme bilgileri ve notlar. Döviz ve kur, şahıs alıcı (TCKN) desteklenir. Hesap yapmaz; tutarlar belgede yazdığı gibi gösterilir.
 - Şablonlu faturalarda **Standart şablon / Faturanın şablonu** düğmesiyle iki görünüm arasında geçilebilir.
 - Okunur (girintili) ham XML görünümü; gömülü ekler kısaltılır.
-- **Karekod (QR):** GİB şablonları karekodu bir betikle çizer; görüntüleyici şablon betiklerini çalıştırmadığı için karekodu uzantı kendisi üretir ve şablondaki yerine (`#qrcode`) koyar. Metin şablonda varsa (`#qrvalue`) aynen, yoksa GİB şablonlarındaki biçimle faturadan üretilir. Standart şablonda da sağ üstte karekod vardır.
+- **Karekod (QR):** GİB şablonları karekodu bir betikle çizer; görüntüleyici şablon betiklerini çalıştırmadığı için karekodu uzantı kendisi üretir ve şablondaki yerine (`#qrcode`) koyar. Metin şablonda varsa (`#qrvalue`, `qrvalue<no>`) aynen, yoksa GİB şablonlarındaki biçimle faturadan üretilir. Karekodu bir sunucudan isteyen şablonlarda (ör. Sovos: `qr.sovostr.com/qr?data=…`) istek yapılmaz; karekod adresteki metinle yerelde çizilir. Standart şablonda da sağ üstte karekod vardır.
 - Belgenin kendi şablonu sayfada ortalanır (çoğu şablon sabit genişlikte çizip sola yaslar).
 - **Ham XML / Fatura görünümü** geçişi, **Yazdır** düğmesi (Ctrl+P de faturayı yazdırır).
 - windows-1254, ISO-8859-9 ve BOM'lu dosyalar doğru okunur.
@@ -40,6 +40,7 @@ Firefox'un yerleşik `XSLTProcessor`'ı kullanılır. Chrome'da her zaman uzant�
 Görünüm şablonu faturayı gönderen tarafın yazdığı koddur; uzantı ona güvenmez:
 
 - Fatura `sandbox=""` bir iframe'de gösterilir: şablondaki betikler ve `onclick` gibi olay öznitelikleri **çalışmaz**, şablon uzantıya ya da başka sekmelere erişemez.
+- Şablondaki betikler, olay öznitelikleri ve gömülü olmayan kaynaklar (dış ya da göreli adresli görseller, stil dosyaları, CSS `url()`) gösterimden önce sökülür; yalnızca `data:` görseller kalır.
 - Çıktının başına kısıtlayıcı bir içerik güvenliği politikası (CSP) eklenir: dış görsel, stil, yazı tipi yüklenemez; yalnızca satır içi stil ve `data:` görseller (logo, karekod, imza) çalışır. `meta refresh` ve `<base>` atılır, dış bağlantılar tıklanamaz (adres, üzerine gelince görünür).
 - Uzantı sayfalarının CSP'si `connect-src 'self'`: uzantı yalnızca kendi dosyalarını (standart şablon) okuyabilir, hiçbir sunucuya bağlanamaz. Şablondaki `document('http://…')` ile dış belge çekme denemesinin sunucuya ulaşmadığı Chrome'da uçtan uca testle doğrulanıyor (Firefox'ta henüz otomatik test yok).
 - Yazdırmada çıktı ayrıca betiklerden, olay özniteliklerinden ve `javascript:` bağlantılarından temizlenir ve betik çalıştıramayan ayrı bir çerçevede basılır.

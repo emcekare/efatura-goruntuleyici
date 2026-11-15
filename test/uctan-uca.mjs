@@ -182,7 +182,27 @@ try {
     esitMi(veri.odenecek, "38705.40", "karekoddaki ödenecek");
   });
 
+  await dene("karekod: sunucudan istenen karekod yerelde çizilir, dış görseller sökülür", async () => {
+    await xmlAc("karekod-uzak-sunucu.xml");
+    const veri = JSON.parse(await karekoduCoz());
+    esitMi(veri.no, "KRK2026000000001", "karekoddaki fatura no");
+    esitMi(veri.odenecek, "38705.40", "karekoddaki ödenecek");
+    const srcdoc = await sayfa.locator("#faturaCercevesi").getAttribute("srcdoc");
+    if (srcdoc.includes(`${SITE}/`) && /src="http/.test(srcdoc)) throw new Error("dış görsel adresi kaldı");
+    if (/url\(\s*['"]?http/i.test(srcdoc)) throw new Error("dış CSS url() kaldı");
+  });
+
+  await dene("karekod: kimliği sonekli yer tutucu (qrcode<no>)", async () => {
+    await xmlAc("karekod-sonekli.xml");
+    const veri = JSON.parse(await karekoduCoz());
+    esitMi(veri.sonek, "evet", "şablonun kendi karekod metni");
+    const srcdoc = await sayfa.locator("#faturaCercevesi").getAttribute("srcdoc");
+    if (/\son(load|error)=/i.test(srcdoc)) throw new Error("olay öznitelikleri kaldı");
+  });
+
   await dene("faturanın şablonu sayfada ortalanır", async () => {
+    await xmlAc("efatura-ornek.xml");
+    await cerceveMetni("ORN2026000000001");
     const cerceveKutusu = await sayfa.locator("#faturaCercevesi").boundingBox();
     const govde = await cerceve().locator("body").boundingBox();
     const sol = govde.x - cerceveKutusu.x;
@@ -362,7 +382,7 @@ try {
       if (["error", "warning"].includes(m.type()) && (m.page()?.url() ?? "").startsWith("chrome-extension://")) iletiler.push(m.text().slice(0, 100));
     };
     baglam.on("console", dinle);
-    for (const ad of ["efatura-ornek.xml", "earsiv-pdf-ve-adsiz-sablon.xml", "sablonsuz-dovizli-tevkifatli.xml", "eirsaliye-ornek.xml", "windows-1254-fatura.xml"]) {
+    for (const ad of ["efatura-ornek.xml", "earsiv-pdf-ve-adsiz-sablon.xml", "sablonsuz-dovizli-tevkifatli.xml", "eirsaliye-ornek.xml", "windows-1254-fatura.xml", "karekod-uzak-sunucu.xml", "karekod-sonekli.xml"]) {
       await xmlAc(ad);
       await sayfa.waitForTimeout(500);
     }

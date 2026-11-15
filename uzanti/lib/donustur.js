@@ -69,6 +69,26 @@ export async function xsltHazirla(polyfillZorla = false) {
   return typeof XSLTProcessor !== "undefined";
 }
 
+const XSL = "http://www.w3.org/1999/XSL/Transform";
+
+/**
+ * Şablondaki olay özniteliklerini (onload, onclick…) dönüşümden önce söker. Çıktıda
+ * hiç çalışmıyorlar; ama Chrome (157+) çıktı yalnızca bellekte ayrıştırılırken bile
+ * her biri için uzantının hata listesine CSP uyarısı yazıyor.
+ */
+function olayOznitelikleriniSok(xslBelge) {
+  for (const el of Array.from(xslBelge.getElementsByTagName("*"))) {
+    if (el.namespaceURI === XSL) {
+      // <xsl:attribute name="onclick">
+      if (el.localName === "attribute" && /^\s*on/i.test(el.getAttribute("name") ?? "")) el.remove();
+      continue;
+    }
+    for (const oz of Array.from(el.attributes)) {
+      if (!oz.namespaceURI && oz.localName.toLowerCase().startsWith("on")) el.removeAttributeNode(oz);
+    }
+  }
+}
+
 /**
  * Ayrıştırılmış XML'e XSLT şablonunu uygular, HTML belge metnini döner.
  * @param {Document} xmlBelge
@@ -78,6 +98,7 @@ export async function xsltHazirla(polyfillZorla = false) {
 export function xsltUygula(xmlBelge, xslt) {
   const xslBelge = new DOMParser().parseFromString(xslt, "application/xml");
   if (xslBelge.getElementsByTagName("parsererror").length > 0) throw new Error("şablon okunamadı");
+  olayOznitelikleriniSok(xslBelge);
 
   let sonuc;
   motorSusturuluyor = true;
@@ -86,6 +107,13 @@ export function xsltUygula(xmlBelge, xslt) {
     const islemci = new XSLTProcessor();
     islemci.importStylesheet(xslBelge);
     sonuc = islemci.transformToDocument(xmlBelge);
+  } catch (e) {
+    // Motorun asıl gerekçesini öne çıkar (polyfill yalnızca "XSLT Transformation failed" diyor)
+    const neden = motorIletileri.find((i) => /error/i.test(i) && !/compilation error|only 1\.1 features/i.test(i));
+    if (/Unregistered function/i.test(neden ?? "")) {
+      throw new Error(`şablon XSLT 2.0'a özgü işlevler kullanıyor (${neden.replace(/.*Unregistered function:\s*/i, "").trim()}); tarayıcılar yalnızca XSLT 1.0 çalıştırabiliyor`);
+    }
+    throw neden ? new Error(neden.trim()) : e;
   } finally {
     motorSusturuluyor = false;
     if (motorIletileri.length) console.debug(`XSLT motoru ${motorIletileri.length} ileti verdi:`, motorIletileri.slice(0, 10));
